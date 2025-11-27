@@ -1,0 +1,52 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "moduleResolution": "Bundler",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
+    "types": [
+      "node",
+      // uni API 相关的 TypeScript 类型
+      "@dcloudio/types",
+      // wx API 相关的 TypeScript 类型
+      "@types/wechat-miniprogram",
+      // 为 uni-app 组件提供 TypeScript 类型
+      "@uni-helper/uni-types",
+      // 为 @uni-helper/vite-plugin-uni-pages 组件提供 TypeScript 类型
+      "@uni-helper/vite-plugin-uni-pages",
+      // 为 wot-design-uni 组件提供 TypeScript 类型
+      "wot-design-uni/global"
+    ],
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "vueCompilerOptions": {
+    // 调整 Volar（Vue 语言服务工具）解析行为，用于为 uni-app 组件提供 TypeScript 类型
+    "nativeTags": [
+      "block",
+      "component",
+      "template",
+      "slot"
+    ],
+    "plugins": [
+      "@uni-helper/uni-types/volar-plugin"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    "types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
