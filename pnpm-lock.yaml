@@ -162,6 +162,9 @@ importers:
       '@uni-ku/bundle-optimizer':
         specifier: ^1.3.16
         version: 1.3.16(@vueuse/core@9.13.0(vue@3.4.21(typescript@5.9.3)))(postcss@8.5.6)(rollup@4.24.0)(vite@5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0))(vue@3.4.21(typescript@5.9.3))
+      '@uni-ku/root':
+        specifier: ^1.4.1
+        version: 1.4.1(vite@5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0))
       '@unocss/eslint-plugin':
         specifier: ^66.5.9
         version: 66.5.9(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3)
@@ -2445,6 +2448,11 @@ packages:
     resolution: {integrity: sha512-9hthbPnafUkljWoIMMZ/MZ8QNcvUnjrt14lucGtYkLU4ehAIgu6I8x0HlPHxFLsBpJJmkbv1FmcFTXwzkozwgA==}
     peerDependencies:
       vite: ^4.0.0 || ^5.0.0
+
+  '@uni-ku/root@1.4.1':
+    resolution: {integrity: sha512-DI9LLbWmPXjqJVwZTC84GuvSz9vzOgSUjbFrOE1y3kivttEReNVqwWM3n/kzFoNuS3KKm/DissOph4rFs912Zw==}
+    peerDependencies:
+      vite: ^5.0.0
 
   '@unocss-applet/preset-applet@0.12.2':
     resolution: {integrity: sha512-w4R4lkAUbbZ1f6SXkwhcBmGLjgMmgpKUIsWG92ojfg83+kiaX4ENS47SiadO4SOZEJssE2wflvxkjG0CfUN9rQ==}
@@ -9976,6 +9984,13 @@ snapshots:
       - ts-node
       - vue
 
+  '@uni-ku/root@1.4.1(vite@5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0))':
+    dependencies:
+      '@vue/compiler-sfc': 3.4.21
+      chokidar: 3.6.0
+      jsonc-parser: 3.3.1
+      vite: 5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0)
+
   '@unocss-applet/preset-applet@0.12.2':
     dependencies:
       '@unocss/core': 66.5.9
@@ -10304,7 +10319,7 @@ snapshots:
       '@vue/compiler-ssr': 3.4.21
       '@vue/shared': 3.4.21
       estree-walker: 2.0.2
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       postcss: 8.5.6
       source-map-js: 1.2.1
 

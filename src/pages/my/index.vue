@@ -3,6 +3,7 @@ import { useAppStore } from '@/stores/app'
 import { uniNav } from '@/utils'
 
 definePage({
+  layout: 'tabbar',
   style: {
     navigationBarTitleText: '',
     navigationStyle: 'custom',
@@ -40,8 +41,6 @@ function toLogin() {
       </WdCell>
     </WdCellGroup>
   </div>
-
-  <VTabbar value="my" />
 </template>
 
 <!-- <style lang="scss" scoped></style> -->

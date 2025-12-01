@@ -10,6 +10,7 @@
     {
       "path": "pages/home/home",
       "type": "home",
+      "layout": "tabbar",
       "style": {
         "navigationBarTitleText": "",
         "navigationStyle": "custom"
@@ -34,6 +35,7 @@
     {
       "path": "pages/my/index",
       "type": "page",
+      "layout": "tabbar",
       "style": {
         "navigationBarTitleText": "",
         "navigationStyle": "custom"

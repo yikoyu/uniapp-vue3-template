@@ -5,6 +5,7 @@ import { uniNav } from '@/utils'
 
 definePage({
   type: 'home',
+  layout: 'tabbar',
   style: {
     navigationBarTitleText: '',
     navigationStyle: 'custom',
@@ -113,9 +114,13 @@ async function getUserInfo() {
     <WdButton @click="toEcharts">
       Echarts
     </WdButton>
-  </view>
 
-  <VTabbar value="home" />
+    <div>
+      <div v-for="item in 100" :key="item">
+        {{ item }}
+      </div>
+    </div>
+  </view>
 </template>
 
 <!-- <style lang="scss" scoped></style> -->

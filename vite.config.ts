@@ -6,6 +6,7 @@ import UniHelperLayouts from '@uni-helper/vite-plugin-uni-layouts'
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
 import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
 import UniKuBundleOptimizer from '@uni-ku/bundle-optimizer'
+import UniKuRoot from '@uni-ku/root'
 
 import { visualizer } from 'rollup-plugin-visualizer'
 import UnoCSS from 'unocss/vite'
@@ -41,6 +42,8 @@ export default defineConfig(async ({ command, mode }) => {
         dts: 'types/_components.d.ts',
         resolvers: [WotResolver()],
       }),
+      // https://github.com/uni-ku/root
+      UniKuRoot(),
       /**
        * 分包优化、模块异步跨包调用、组件异步跨包引用
        * @see https://github.com/uni-ku/bundle-optimizer

@@ -2,7 +2,7 @@
 import { uniNav } from '@/utils'
 
 const props = withDefaults(defineProps<{
-  value: 'home' | 'my'
+  value: string
   fixed?: boolean
   safeAreaInsetBottom?: boolean
   placeholder?: boolean
@@ -13,8 +13,8 @@ const props = withDefaults(defineProps<{
 })
 
 const tabs = {
-  home: '/pages/home/home',
-  my: '/pages/my/index',
+  'pages/home/home': '/pages/home/home',
+  'pages/my/index': '/pages/my/index',
 }
 
 function onChange({ value }) {
@@ -31,8 +31,8 @@ function onChange({ value }) {
 
 <template>
   <WdTabbar :model-value="value" safe-area-inset-bottom placeholder fixed @change="onChange">
-    <WdTabbarItem title="房态" name="home" icon="home" />
-    <WdTabbarItem title="我的" name="my" icon="user" />
+    <WdTabbarItem title="房态" name="pages/home/home" icon="home" />
+    <WdTabbarItem title="我的" name="pages/my/index" icon="user" />
   </WdTabbar>
 </template>
 
