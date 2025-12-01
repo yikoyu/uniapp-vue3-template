@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useAppStore } from '@/stores/app'
 import { uniNav } from '@/utils'
 
 definePage({
@@ -9,7 +10,9 @@ definePage({
 })
 
 function toLogin() {
-  uniNav.navigateTo('/pages/login/login')
+  useAppStore().logout().finally(() => {
+    uniNav.navigateTo('/pages/login/login')
+  })
 }
 </script>
 

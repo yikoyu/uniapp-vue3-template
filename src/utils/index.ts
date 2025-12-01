@@ -1,5 +1,4 @@
 export * from './dateUtil'
-export * from './request'
 export * from './toast'
 export * from './uniNav'
 export * from './uniPromise'

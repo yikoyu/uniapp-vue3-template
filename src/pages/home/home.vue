@@ -57,8 +57,8 @@ function setAppStore() {
   setCountPlus()
 
   app.setToken({
-    accessToken: `accessToken_${count.value}`,
-    refreshToken: `refreshToken_${count.value}`,
+    accessToken: `__accessToken__`,
+    refreshToken: `__refreshToken__`,
     accessTokenExpire: Date.now() + 1000 * 60 * 60 * 24,
     refreshTokenExpire: Date.now() + 1000 * 60 * 60 * 24 * 7,
   })
@@ -70,6 +70,11 @@ function resetAppStore() {
 
 function toEcharts() {
   uniNav.navigateTo('/pages-echarts/bar/index')
+}
+
+async function getUserInfo() {
+  const data = await useAppStore().getLoginUserInfo()
+  uni.showToast({ title: data?.userName })
 }
 </script>
 
@@ -99,6 +104,10 @@ function toEcharts() {
 
     <WdButton @click="resetAppStore">
       删除Pinia数据
+    </WdButton>
+
+    <WdButton @click="getUserInfo">
+      获取用户信息
     </WdButton>
 
     <WdButton @click="toEcharts">

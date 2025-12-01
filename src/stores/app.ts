@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 
-import { doWxLogin, getLoginUserInfo, logout, mLogin, wechatLoginCode } from '@/api/auth'
 import { getTimestamp } from '@/utils/dateUtil'
 import { toast } from '@/utils/toast'
 import { uniNav } from '@/utils/uniNav'
@@ -64,10 +63,13 @@ export const useAppStore = defineStore('app', {
         toast.loading('登录中...')
 
         this.resetToken()
-        wechatLoginCode(loginCode, phoneCode)
+        Apis.general.wxAuthorizeLoginCodeUsingPOST({
+          meta: { authRole: null },
+          data: { loginCode, phoneCode },
+        })
           .then((res) => {
             // 登录成功
-            this.setToken(res.data.data)
+            this.setToken(res.data as Recordable)
             this.isLastLoginWechat = true
             toast.hideLoading()
             toast.success('登录成功')
@@ -98,11 +100,14 @@ export const useAppStore = defineStore('app', {
             onlyAuthorize: true,
           })
           .then(({ code }) => {
-            return doWxLogin(code)
+            return Apis.general.doWxLoginUsingPOST({
+              meta: { authRole: null },
+              data: { code },
+            })
           })
           .then((res) => {
             // 登录成功
-            this.setToken(res.data.data)
+            this.setToken(res.data as Recordable)
             this.isLastLoginWechat = true
             toast.hideLoading()
             toast.success('登录成功')
@@ -134,13 +139,36 @@ export const useAppStore = defineStore('app', {
       return new Promise<string | void>((resolve, reject) => {
         toast.loading('登录中...')
 
-        mLogin(phone, verificationCode)
+        Apis.general.mLoginUsingPOST({
+          meta: { authRole: null },
+          data: {
+            phone,
+            verificationCode: Number(verificationCode),
+          },
+        })
           .then((res) => {
             // 登录成功
-            this.setToken(res.data.data)
+            this.setToken(res.data as Recordable)
             this.isLastLoginWechat = false
             toast.hideLoading()
             toast.success('登录成功')
+            resolve(this.accessToken)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    },
+
+    refreshTokenLogin() {
+      return new Promise<string | void>((resolve, reject) => {
+        Apis.general.refreshTokenUsingPOST({
+          meta: { authRole: 'refreshToken' },
+          data: { refreshToken: this.refreshToken },
+        })
+          .then((res) => {
+            // 登录成功
+            this.setToken(res.data as Recordable)
             resolve(this.accessToken)
           })
           .catch((err) => {
@@ -153,7 +181,9 @@ export const useAppStore = defineStore('app', {
       return new Promise<void>((resolve, reject) => {
         toast.loading('正在退出...')
 
-        logout()
+        Apis.general.logoutUsingGET({
+          meta: { authRole: null },
+        })
           .then(() => {
             this.resetToken()
             this.isLastLoginWechat = false
@@ -179,9 +209,9 @@ export const useAppStore = defineStore('app', {
           return
         }
 
-        getLoginUserInfo()
+        Apis.general.getLoginUserUsingGET()
           .then((res) => {
-            this.user = res.data.data
+            this.user = (res.data || {}) as Recordable
             resolve(this.user)
           })
           .catch((err) => {
@@ -195,6 +225,7 @@ export const useAppStore = defineStore('app', {
     isLogin(state) {
       const expireTimestamp = state.loginTimestamp + state.accessTokenExpire
       const now = getTimestamp()
+      console.log('expireTimestamp :>> ', expireTimestamp)
       return !!(state.accessToken && expireTimestamp > now)
     },
 

@@ -76,9 +76,7 @@ async function shuaxin() {
   data.loaded = false
 
   try {
-    const res = await sendSmsCheck()
-
-    const { data: _data } = res
+    const _data = await sendSmsCheck()
 
     if (_data.status !== 200) {
       // 错误处理
@@ -91,9 +89,9 @@ async function shuaxin() {
     }
 
     // 生成验证码成功
-    data.futuPic = _data.data.captcha.sliderImage
-    data.zhutuPic = _data.data.captcha.backgroundImage
-    data.captchaId = _data.data.id
+    data.futuPic = _data.data?.captcha?.sliderImage || ''
+    data.zhutuPic = _data.data?.captcha?.backgroundImage || ''
+    data.captchaId = _data.data?.id || ''
     data.loaded = true
   }
   catch (err: any) {
@@ -156,7 +154,7 @@ async function touchend(event: Recordable) {
       })
 
       try {
-        const res = await sendSms({
+        const _data = await sendSms({
           captchaTrack: {
             ...captchaTrack,
             endSlidingTime: dayjs(captchaTrack.endSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
@@ -168,7 +166,7 @@ async function touchend(event: Recordable) {
           },
         })
 
-        if (res.data.status === 200) {
+        if (_data.status === 200) {
           data.captchaStatus = 'success'
           setTimeout(() => {
             show.value = false
@@ -178,7 +176,7 @@ async function touchend(event: Recordable) {
           return
         }
 
-        res.data.msg && uni.showToast({ title: res.data.msg, icon: 'none' })
+        _data.msg && uni.showToast({ title: _data.msg, icon: 'none' })
         // 启动抖动动画
         data.futu_doudongClass = true // 执行抖动的css动画
         data.captchaStatus = 'error'

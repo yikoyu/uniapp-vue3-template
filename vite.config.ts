@@ -16,12 +16,14 @@ import { defineConfig } from 'vite'
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
   const { UNI_PLATFORM } = process.env
+  const isBuild = process.env.NODE_ENV === 'production'
+
   console.log('[vite] :>> ', command, mode, process.env.NODE_ENV)
 
   return {
     base: './',
     optimizeDeps: {
-      exclude: process.env.NODE_ENV === 'development' ? ['wot-design-uni', 'uni-echarts'] : [],
+      exclude: isBuild ? [] : ['wot-design-uni', 'uni-echarts'],
     },
     plugins: [
       // https://github.com/uni-helper/vite-plugin-uni-manifest
@@ -58,15 +60,22 @@ export default defineConfig(async ({ command, mode }) => {
             name: '_async-component.d.ts',
           },
         },
-        logger: process.env.NODE_ENV === 'production',
+        logger: isBuild,
       }),
       // https://uni-helper.cn/plugin-uni
       Uni(),
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
-        imports: ['vue', 'uni-app'],
+        imports: [
+          'vue',
+          'uni-app',
+          {
+            from: 'alova/client',
+            imports: ['usePagination', 'useRequest', 'useWatcher', 'useForm'],
+          },
+        ],
         dts: 'types/_auto-import.d.ts',
-        dirs: ['src/hooks'], // 自动导入 hooks
+        dirs: ['src/hooks', 'src/api'], // 自动导入 hooks
         vueTemplate: true, // default false
       }),
       // https://github.com/antfu/unocss
@@ -74,7 +83,7 @@ export default defineConfig(async ({ command, mode }) => {
       UnoCSS(),
       // 打包分析插件，h5 + 生产环境才弹出
       UNI_PLATFORM === 'h5'
-      && mode === 'production'
+      && isBuild
       && visualizer({
         gzipSize: true,
         brotliSize: true,

@@ -1,8 +1,17 @@
 {
-  "name": "wechat-mini-template",
+  "name": "uniapp-vue3-template",
   "type": "module",
   "version": "0.0.0",
+  "private": true,
   "packageManager": "pnpm@10.11.1",
+  "description": "uniapp vue3开发模版",
+  "author": {
+    "name": "yikoyu",
+    "url": "https://github.com/yikoyu"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/yikoyu",
+  "repository": "https://github.com/yikoyu/uniapp-vue3-template",
   "engines": {
     "node": ">=20",
     "pnpm": ">=10"
@@ -20,6 +29,7 @@
     "h5:build:dev": "uni build -p h5 --mode development",
     "h5:build:tst": "uni build -p h5 --mode test",
     "h5:build:prd": "uni build -p h5 --mode production",
+    "alova-gen": "alova gen -f",
     "commit": "pnpm czg",
     "lint:js": "eslint .",
     "lint:css": "stylelint \"**/*.{css,scss,less,vue}\"",
@@ -31,6 +41,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@alova/adapter-uniapp": "^2.0.14",
+    "@alova/mock": "^2.0.17",
     "@dcloudio/uni-app": "3.0.0-4080520251106001",
     "@dcloudio/uni-app-harmony": "3.0.0-4080520251106001",
     "@dcloudio/uni-app-plus": "3.0.0-4080520251106001",
@@ -48,11 +60,11 @@
     "@dcloudio/uni-mp-xhs": "3.0.0-4080520251106001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-4080520251106001",
     "@vueuse/core": "9.13.0",
+    "alova": "^3.3.4",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.19",
     "echarts": "^6.0.0",
     "lodash-es": "^4.17.21",
-    "luch-request": "^3.1.1",
     "pinia": "2.3.1",
     "pinia-plugin-persistedstate": "4.2.0",
     "qs": "^6.14.0",
@@ -62,6 +74,7 @@
     "zod": "^4.1.13"
   },
   "devDependencies": {
+    "@alova/wormhole": "^1.5.0",
     "@antfu/eslint-config": "^6.2.0",
     "@dcloudio/types": "3.4.19",
     "@dcloudio/uni-automator": "3.0.0-4080520251106001",

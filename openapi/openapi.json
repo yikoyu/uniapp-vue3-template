@@ -1,0 +1,980 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "uniapp模版接口说明",
+    "version": "1.0",
+    "title": "uniapp模版接口说明",
+    "contact": {
+      "name": "swagger"
+    }
+  },
+  "host": "localhost:8400",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "授权钥匙",
+      "description": "Lock Controller"
+    },
+    {
+      "name": "登录控制器",
+      "description": "Login Controller"
+    }
+  ],
+  "paths": {
+    "/getLoginUser": {
+      "get": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "获取当前登录用户信息",
+        "operationId": "getLoginUserUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«PmsLoginUser»",
+              "originalRef": "ResultObj«PmsLoginUser»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/login/doWxLogin": {
+      "post": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "微信CODE登录",
+        "operationId": "doWxLoginUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "param",
+            "description": "param",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WxLoginParams",
+              "originalRef": "WxLoginParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«TokenVo»",
+              "originalRef": "ResultObj«TokenVo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/login/wxAuthorizeLoginCode": {
+      "post": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "微信登录",
+        "operationId": "wxAuthorizeLoginCodeUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "param",
+            "description": "param",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WxRequestCodeParam",
+              "originalRef": "WxRequestCodeParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«TokenVo»",
+              "originalRef": "ResultObj«TokenVo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "登出",
+        "operationId": "logoutUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/mlogin": {
+      "post": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "手机登录",
+        "description": "手机登录",
+        "operationId": "mLoginUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MobileLoginParam",
+              "originalRef": "MobileLoginParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«TokenVo»",
+              "originalRef": "ResultObj«TokenVo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/refreshToken": {
+      "post": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "刷新token",
+        "operationId": "refreshTokenUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "params",
+            "description": "params",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshTokenParams",
+              "originalRef": "RefreshTokenParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«TokenVo»",
+              "originalRef": "ResultObj«TokenVo»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/sendSms": {
+      "post": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "发送验证码",
+        "description": "发送验证码",
+        "operationId": "sendSmsUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "sendSmsParam",
+            "description": "sendSmsParam",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CaptchaRequest«SendSmsParam»",
+              "originalRef": "CaptchaRequest«SendSmsParam»"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«Void»",
+              "originalRef": "ResultObj«Void»"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    },
+    "/sendSmsCheck": {
+      "get": {
+        "tags": [
+          "登录控制器"
+        ],
+        "summary": "获取滑块信息",
+        "operationId": "sendSmsCheckUsingGET",
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ResultObj«CaptchaResponse«OldImageCaptchaVO»»",
+              "originalRef": "ResultObj«CaptchaResponse«OldImageCaptchaVO»»"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        },
+        "security": [
+          {
+            "Authorization": [
+              "global"
+            ]
+          },
+          {
+            "clientid": [
+              "global"
+            ]
+          },
+          {
+            "STORE": [
+              "global"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Authorization": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    },
+    "STORE": {
+      "type": "apiKey",
+      "name": "STORE",
+      "in": "header"
+    },
+    "clientid": {
+      "type": "apiKey",
+      "name": "clientid",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "CaptchaRequest«SendSmsParam»": {
+      "type": "object",
+      "required": [
+        "captchaTrack"
+      ],
+      "properties": {
+        "captchaTrack": {
+          "$ref": "#/definitions/ImageCaptchaTrack",
+          "originalRef": "ImageCaptchaTrack"
+        },
+        "form": {
+          "$ref": "#/definitions/SendSmsParam",
+          "originalRef": "SendSmsParam"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "title": "CaptchaRequest«SendSmsParam»"
+    },
+    "CaptchaResponse«OldImageCaptchaVO»": {
+      "type": "object",
+      "properties": {
+        "captcha": {
+          "$ref": "#/definitions/OldImageCaptchaVO",
+          "originalRef": "OldImageCaptchaVO"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "title": "CaptchaResponse«OldImageCaptchaVO»"
+    },
+    "ImageCaptchaTrack": {
+      "type": "object",
+      "properties": {
+        "bgImageHeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "bgImageWidth": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "endSlidingTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entSlidingTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sliderImageHeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sliderImageWidth": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "startSlidingTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "trackList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Track",
+            "originalRef": "Track"
+          }
+        }
+      },
+      "title": "ImageCaptchaTrack"
+    },
+    "MobileLoginParam": {
+      "type": "object",
+      "required": [
+        "phone",
+        "verificationCode"
+      ],
+      "properties": {
+        "cancel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "账号注销继续登录 传1撤销注销并继续登录"
+        },
+        "currAccount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "是否为当前手机号 1-是"
+        },
+        "phone": {
+          "type": "string",
+          "minLength": 11,
+          "maxLength": 11
+        },
+        "verificationCode": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "MobileLoginParam"
+    },
+    "OldImageCaptchaVO": {
+      "type": "object",
+      "properties": {
+        "backgroundImage": {
+          "type": "string"
+        },
+        "backgroundImageHeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "backgroundImageTag": {
+          "type": "string"
+        },
+        "backgroundImageWidth": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "sliderImage": {
+          "type": "string"
+        },
+        "sliderImageHeight": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sliderImageTag": {
+          "type": "string"
+        },
+        "sliderImageWidth": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "title": "OldImageCaptchaVO"
+    },
+    "RefreshTokenParams": {
+      "type": "object",
+      "required": [
+        "refreshToken"
+      ],
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "description": "token"
+        }
+      },
+      "title": "RefreshTokenParams"
+    },
+    "ResultObj«CaptchaResponse«OldImageCaptchaVO»»": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "响应中的数据",
+          "$ref": "#/definitions/CaptchaResponse«OldImageCaptchaVO»",
+          "originalRef": "CaptchaResponse«OldImageCaptchaVO»"
+        },
+        "msg": {
+          "type": "string",
+          "description": "响应消息"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "状态 200-成功，201-错误，400-参数错误"
+        }
+      },
+      "title": "ResultObj«CaptchaResponse«OldImageCaptchaVO»»"
+    },
+    "ResultObj«PmsLoginUser»": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "响应中的数据",
+          "$ref": "#/definitions/PmsLoginUser",
+          "originalRef": "PmsLoginUser"
+        },
+        "msg": {
+          "type": "string",
+          "description": "响应消息"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "状态 200-成功，201-错误，400-参数错误"
+        }
+      },
+      "title": "ResultObj«PmsLoginUser»"
+    },
+    "ResultObj«TokenVo»": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "响应中的数据",
+          "$ref": "#/definitions/TokenVo",
+          "originalRef": "TokenVo"
+        },
+        "msg": {
+          "type": "string",
+          "description": "响应消息"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "状态 200-成功，201-错误，400-参数错误"
+        }
+      },
+      "title": "ResultObj«TokenVo»"
+    },
+    "ResultObj«Void»": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "description": "响应中的数据",
+          "type": "object"
+        },
+        "msg": {
+          "type": "string",
+          "description": "响应消息"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "状态 200-成功，201-错误，400-参数错误"
+        }
+      },
+      "title": "ResultObj«Void»"
+    },
+    "SendSmsParam": {
+      "type": "object",
+      "properties": {
+        "currAccount": {
+          "type": "string",
+          "description": "是否为当前手机号 1-是"
+        },
+        "phone": {
+          "type": "string",
+          "description": "手机号"
+        }
+      },
+      "title": "SendSmsParam"
+    },
+    "TokenVo": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "accessTokenExpire": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "refreshTokenExpire": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "title": "TokenVo"
+    },
+    "Track": {
+      "type": "object",
+      "properties": {
+        "t": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "x": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "Track"
+    },
+    "WxLoginParams": {
+      "type": "object",
+      "required": [
+        "code"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        }
+      },
+      "title": "WxLoginParams"
+    },
+    "WxRequestCodeParam": {
+      "type": "object",
+      "required": [
+        "loginCode",
+        "phoneCode"
+      ],
+      "properties": {
+        "loginCode": {
+          "type": "string"
+        },
+        "phoneCode": {
+          "type": "string"
+        }
+      },
+      "title": "WxRequestCodeParam"
+    },
+    "PmsLoginUser": {
+      "type": "object",
+      "properties": {
+        "accountState": {
+          "type": "integer",
+          "format": "int32",
+          "description": "账号状态"
+        },
+        "adminType": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "authState": {
+          "type": "string",
+          "description": "认证状态 0-未认证 1-已认证"
+        },
+        "bindPhone": {
+          "type": "string",
+          "description": "账号绑定手机号"
+        },
+        "createTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "创建时间"
+        },
+        "deviceId": {
+          "type": "string",
+          "description": "设备id"
+        },
+        "exPhone": {
+          "type": "string",
+          "description": "手机号"
+        },
+        "hasPwd": {
+          "type": "boolean",
+          "description": "是否有密码"
+        },
+        "headPic": {
+          "type": "string",
+          "description": "用户头像"
+        },
+        "menuPermission": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoginMenuTreeNode",
+            "originalRef": "LoginMenuTreeNode"
+          }
+        },
+        "nickName": {
+          "type": "string",
+          "description": "用户名称"
+        },
+        "refreshToken": {
+          "type": "string"
+        },
+        "regLocation": {
+          "type": "string",
+          "description": "注册所在地"
+        },
+        "rolePermission": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LoginUserRole",
+            "originalRef": "LoginUserRole"
+          }
+        },
+        "sex": {
+          "type": "string",
+          "description": "用户性别"
+        },
+        "updateTime": {
+          "type": "string",
+          "format": "date-time",
+          "description": "修改时间"
+        },
+        "userAccount": {
+          "type": "string",
+          "description": "用户账号"
+        },
+        "userId": {
+          "type": "string",
+          "description": "用户id"
+        },
+        "userName": {
+          "type": "string",
+          "description": "用户姓名"
+        }
+      },
+      "title": "PmsLoginUser"
+    },
+    "LoginMenuTreeNode": {
+      "type": "object",
+      "properties": {
+        "hidden": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "meta": {
+          "$ref": "#/definitions/Meta",
+          "originalRef": "Meta"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pid": {
+          "type": "string"
+        }
+      },
+      "title": "LoginMenuTreeNode"
+    },
+    "LoginUserRole": {
+      "type": "object",
+      "properties": {
+        "dataScope": {
+          "type": "string"
+        },
+        "roleId": {
+          "type": "string"
+        },
+        "roleKey": {
+          "type": "string"
+        },
+        "roleName": {
+          "type": "string"
+        },
+        "staffId": {
+          "type": "string"
+        }
+      },
+      "title": "LoginUserRole"
+    },
+    "Meta": {
+      "type": "object",
+      "properties": {
+        "show": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "Meta"
+    }
+  }
+}

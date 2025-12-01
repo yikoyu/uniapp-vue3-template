@@ -1,5 +1,4 @@
-import { URL } from '@/api/_url'
-import { request } from '@/utils/request'
+import type { CaptchaRequest_SendSmsParam_ } from '@/api/_gen/globals'
 
 export interface SendSmsData {
   captchaTrack: {
@@ -28,12 +27,17 @@ export interface SendSmsData {
  * @description: 获取滑块验证码
  */
 export function sendSmsCheck() {
-  return request.get(URL.sendSmsCheck)
+  return Apis.general.sendSmsCheckUsingGET({
+    meta: { authRole: null },
+  })
 }
 
 /**
  * @description: 发送验证码
  */
-export function sendSms(data: SendSmsData) {
-  return request.post(URL.sendSms, data)
+export function sendSms(data: CaptchaRequest_SendSmsParam_) {
+  return Apis.general.sendSmsUsingPOST({
+    meta: { authRole: null },
+    data,
+  })
 }

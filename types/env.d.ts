@@ -25,14 +25,7 @@ interface ViteEnv {
    * @type {string}
    * @memberof ViteEnv
    */
-  readonly VITE_API_HOST: string
-
-  /**
-   * @description 接口 header.clientid
-   * @type {string}
-   * @memberof ViteEnv
-   */
-  readonly VITE_API_CLIENT_ID: string
+  readonly VITE_API_BASE_URL: string
 
   /**
    * @description 小程序名称
@@ -54,6 +47,13 @@ interface ViteEnv {
    * @memberof ViteEnv
    */
   readonly VITE_PRIVACY_AGREEMENT_LINK: string
+
+  /**
+   * @description 是否启用 mock
+   * @type {string}
+   * @memberof ViteEnv
+   */
+  readonly VITE_ENABLE_MOCK: string
 }
 
 interface ImportMetaEnv extends ViteEnv {}

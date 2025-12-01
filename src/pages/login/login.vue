@@ -93,6 +93,7 @@ radio {
   position: relative;
   height: 100%;
   padding: 0 30rpx;
+  padding-top: 540rpx;
 
   // &__background {
   //   z-index: -1;
