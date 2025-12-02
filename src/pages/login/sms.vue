@@ -17,7 +17,6 @@ definePage({
 })
 
 const reLaunchUrl = ref('')
-onShareAppMessage(options => onGlobalShare(options))
 
 onLoad((query) => {
   reLaunchUrl.value = decodeURIComponent(query?.redirect || '')

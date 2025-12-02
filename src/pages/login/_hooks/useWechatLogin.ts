@@ -1,37 +1,15 @@
 import { ref, unref } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { toast } from '@/utils/toast'
-import uniPromise from '@/utils/uniPromise'
 
 export function useWechatLogin(hooks?: Fn) {
-  const selected = ref(true)
+  const selected = ref(false)
 
   const reLaunchUrl = ref('')
 
-  const app = useAppStore()
-
-  async function getWechatLoginCode() {
-    // 5分钟过期，写定时器去获取
-    // 一天的调用总次数不多于该小程序pv的两倍
-
-    try {
-      const { code: _code } = await uniPromise.promise(uni.login)({
-        provider: 'weixin',
-        onlyAuthorize: true,
-      })
-
-      console.log('[uni.login] success :>> ', _code)
-
-      return _code
-    }
-    catch (error) {
-      console.log('[uni.login] error :>> ', error)
-    }
-  }
-
   async function getPhoneNumber(e: Recordable) {
     if (!unref(selected)) {
-      // toast.show('请阅读并勾选底部协议')
+      toast.show('请阅读并勾选协议')
       return
     }
 
@@ -40,14 +18,8 @@ export function useWechatLogin(hooks?: Fn) {
       return
     }
 
-    const loginCode = await getWechatLoginCode()
-
-    if (!loginCode) {
-      return
-    }
-
     try {
-      const token = await app.wechatLogin(loginCode, code)
+      const token = await useAppStore().wechatLogin(code)
 
       if (hooks) {
         hooks(token)
@@ -62,7 +34,6 @@ export function useWechatLogin(hooks?: Fn) {
       const isSessionKeyError = error.data?.status === 1009
 
       if (isSessionKeyError) {
-        getWechatLoginCode()
         toast.error('登录失败请重试')
       }
 
@@ -75,7 +46,6 @@ export function useWechatLogin(hooks?: Fn) {
   return {
     reLaunchUrl,
     selected,
-    getWechatLoginCode,
     getPhoneNumber,
   }
 }

@@ -3,7 +3,6 @@ import { defineStore } from 'pinia'
 import { getTimestamp } from '@/utils/dateUtil'
 import { toast } from '@/utils/toast'
 import { uniNav } from '@/utils/uniNav'
-import uniPromise from '@/utils/uniPromise'
 
 interface IState {
   loginTimestamp: number
@@ -58,15 +57,22 @@ export const useAppStore = defineStore('app', {
       })
     },
 
-    wechatLogin(loginCode: string, phoneCode: string) {
+    wechatLogin(phoneCode: string) {
       return new Promise<string | void>((resolve, reject) => {
         toast.loading('登录中...')
 
         this.resetToken()
-        Apis.general.wxAuthorizeLoginCodeUsingPOST({
-          meta: { authRole: null },
-          data: { loginCode, phoneCode },
+
+        uni.login({
+          provider: 'weixin',
+          onlyAuthorize: true,
         })
+          .then(({ code }) => {
+            return Apis.general.wxAuthorizeLoginCodeUsingPOST({
+              meta: { authRole: null },
+              data: { loginCode: code, phoneCode },
+            })
+          })
           .then((res) => {
             // 登录成功
             this.setToken(res.data as Recordable)
@@ -94,11 +100,10 @@ export const useAppStore = defineStore('app', {
           return
         }
 
-        uniPromise
-          .promise(uni.login)({
-            provider: 'weixin',
-            onlyAuthorize: true,
-          })
+        uni.login({
+          provider: 'weixin',
+          onlyAuthorize: true,
+        })
           .then(({ code }) => {
             return Apis.general.doWxLoginUsingPOST({
               meta: { authRole: null },

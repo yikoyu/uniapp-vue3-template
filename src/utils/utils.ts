@@ -1,5 +1,3 @@
-import { dateUtil } from './dateUtil'
-
 // 防抖
 // eslint-disable-next-line ts/no-unsafe-function-type
 export function debounce(fn: Function, delay: number = 200) {
@@ -22,40 +20,7 @@ export function debounce(fn: Function, delay: number = 200) {
 export function tempToBase64(temp: string) {
   return new Promise<string>((resolve, reject) => {
     const baseFormat = 'data:image/png;base64,'
-    const base64 = wx.getFileSystemManager().readFileSync(temp, 'base64') as string
+    const base64 = uni.getFileSystemManager().readFileSync(temp, 'base64') as string
     resolve(baseFormat + base64)
   })
-}
-
-/**
- * @description: 身份证判断是否成年
- * @param {string} no 接收的字符串（身份证号）
- * @return {boolean} 是否成年
- */
-export function idCardIsAdult(no: string = ''): boolean {
-  if (!no)
-    return false
-
-  const year = no.substring(6, 10)
-  const month = no.substring(10, 12)
-  const day = no.substring(12, 14)
-
-  const birth = `${year}-${month}-${day}`
-
-  const legalAgeDate = dateUtil(birth).add(18, 'year')
-
-  if (dateUtil(legalAgeDate).isSame(new Date(), 'day')) {
-    return true
-  }
-
-  return dateUtil(legalAgeDate).isBefore(new Date(), 'day')
-}
-
-export function JsonParse(value: string) {
-  try {
-    return JSON.parse(value)
-  }
-  catch (error) {
-    return {}
-  }
 }

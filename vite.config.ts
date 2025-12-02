@@ -9,9 +9,11 @@ import UniKuBundleOptimizer from '@uni-ku/bundle-optimizer'
 import UniKuRoot from '@uni-ku/root'
 
 import { visualizer } from 'rollup-plugin-visualizer'
-import UnoCSS from 'unocss/vite'
+import { UniEcharts } from 'uni-echarts/vite'
 
+import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
+
 import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
@@ -44,6 +46,10 @@ export default defineConfig(async ({ command, mode }) => {
       }),
       // https://github.com/uni-ku/root
       UniKuRoot(),
+      // https://uni-echarts.xiaohe.ink
+      UniEcharts(),
+      // https://uni-helper.cn/plugin-uni
+      Uni(),
       /**
        * 分包优化、模块异步跨包调用、组件异步跨包引用
        * @see https://github.com/uni-ku/bundle-optimizer
@@ -65,8 +71,6 @@ export default defineConfig(async ({ command, mode }) => {
         },
         logger: isBuild,
       }),
-      // https://uni-helper.cn/plugin-uni
-      Uni(),
       // https://github.com/antfu/unplugin-auto-import
       AutoImport({
         imports: [

@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { onLoad } from '@dcloudio/uni-app'
 
-import { useWechatLogin } from '@/components/LoginModal/useWechatLogin'
 import NavBar from '@/components/NavBar/index.vue'
+import { toast } from '@/utils'
 import { uniNav } from '@/utils/uniNav'
+import { useWechatLogin } from './_hooks/useWechatLogin'
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME
 
@@ -14,7 +15,6 @@ definePage({
   },
 })
 
-onShareAppMessage(options => onGlobalShare(options))
 const { reLaunchUrl, selected, getPhoneNumber } = useWechatLogin()
 
 onLoad((query) => {
@@ -22,9 +22,19 @@ onLoad((query) => {
 })
 
 function goToSmsLogin() {
+  if (!unref(selected)) {
+    toast.show('请阅读并勾选协议')
+    return
+  }
+
   uniNav.navigateTo('/pages/login/sms', {
     redirect: encodeURIComponent(reLaunchUrl.value || ''),
   })
+}
+
+function toURL(value: number) {
+  (value === 0) && console.log('用户协议')
+  ;(value === 1) && console.log('隐私条款')
 }
 </script>
 
@@ -62,18 +72,18 @@ function goToSmsLogin() {
     </view>
 
     <!-- 勾选协议 -->
-    <!-- <view class="login__privacy-agreement" @click="toggleSelected">
+    <view class="login__privacy-agreement" @click="selected = !selected">
       <label class="login__privacy-agreement--radio">
-      <radio :checked="selected" />
+        <radio :checked="selected" />
 
-      <view>
-      我已阅读并同意
-      <view class="login__privacy-agreement__btn" @click.stop="navigateToURL(0)">《用户协议》</view>
+        <view>
+          我已阅读并同意
+          <view class="login__privacy-agreement__btn" @click.stop="toURL(0)">《用户协议》</view>
 
-      <view class="login__privacy-agreement__btn" @click.stop="navigateToURL(1)">《隐私条款》</view>
-      </view>
+          <view class="login__privacy-agreement__btn" @click.stop="toURL(1)">《隐私条款》</view>
+        </view>
       </label>
-      </view> -->
+    </view>
 
     <!-- 背景 -->
     <!-- <image class="login__background" :src="" /> -->
@@ -141,11 +151,6 @@ radio {
   }
 
   &__privacy-agreement {
-    position: fixed;
-    right: 0;
-    bottom: constant(safe-area-inset-bottom); /* 兼容 IOS<11.2 */
-    bottom: env(safe-area-inset-bottom); /* 兼容 IOS>11.2 */
-    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;

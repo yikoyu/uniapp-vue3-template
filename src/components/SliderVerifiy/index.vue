@@ -2,7 +2,7 @@
 import type { SendSmsData } from './api'
 import dayjs from 'dayjs'
 
-import { isString } from 'lodash-es'
+import { isString } from 'es-toolkit'
 import { computed, reactive, watchEffect } from 'vue'
 import { IconReload } from '@/static'
 import { sendSms, sendSmsCheck } from './api'

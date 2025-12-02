@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import { isBoolean, isFunction } from 'lodash-es'
+import { isBoolean, isFunction } from 'es-toolkit'
 import { computed, unref } from 'vue'
 
 import { useNavBarHeight } from './useNavBarHeight'
