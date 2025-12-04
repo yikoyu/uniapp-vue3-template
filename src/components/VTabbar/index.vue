@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { uniNav } from '@/utils'
-
 const props = withDefaults(defineProps<{
   value: string
   fixed?: boolean
@@ -25,7 +23,7 @@ function onChange({ value }) {
   if (!url)
     return
 
-  uniNav.reLaunch(url)
+  useRouter().reLaunch(url)
 }
 </script>
 

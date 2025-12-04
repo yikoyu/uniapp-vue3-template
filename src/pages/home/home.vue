@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useMessage, useNotify, useToast } from 'wot-design-uni'
 import { useAppStore } from '@/stores/app'
-import { uniNav } from '@/utils'
 
 definePage({
   type: 'home',
@@ -70,7 +69,18 @@ function resetAppStore() {
 }
 
 function toEcharts() {
-  uniNav.navigateTo('/pages-echarts/bar/index')
+  useRouter().navigate('/pages-echarts/bar/index', {
+    a: 1,
+    b: '2',
+    c: true,
+    d: { d1: 1, d2: 2 },
+    resData: JSON.stringify({
+      a: 1,
+      b: '2',
+      c: true,
+      d: { d1: 1, d2: 2 },
+    }),
+  })
 }
 
 async function getUserInfo() {

@@ -1,9 +1,6 @@
 <script lang="ts" setup>
-import { onLoad } from '@dcloudio/uni-app'
-
 import NavBar from '@/components/NavBar/index.vue'
 import { toast } from '@/utils'
-import { uniNav } from '@/utils/uniNav'
 import { useWechatLogin } from './_hooks/useWechatLogin'
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME
@@ -17,18 +14,14 @@ definePage({
 
 const { reLaunchUrl, selected, getPhoneNumber } = useWechatLogin()
 
-onLoad((query) => {
-  reLaunchUrl.value = decodeURIComponent(query?.redirect || '')
-})
-
 function goToSmsLogin() {
   if (!unref(selected)) {
     toast.show('请阅读并勾选协议')
     return
   }
 
-  uniNav.navigateTo('/pages/login/sms', {
-    redirect: encodeURIComponent(reLaunchUrl.value || ''),
+  useRouter().navigate('/pages/login/sms', {
+    redirect: reLaunchUrl.value || '',
   })
 }
 

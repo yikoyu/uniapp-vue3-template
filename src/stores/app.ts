@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 
 import { getTimestamp } from '@/utils/dateUtil'
 import { toast } from '@/utils/toast'
-import { uniNav } from '@/utils/uniNav'
 
 interface IState {
   loginTimestamp: number
@@ -124,14 +123,14 @@ export const useAppStore = defineStore('app', {
                 || err.statusCode === 498 // 账号注销中
             if (isToLogin) {
               this.resetToken()
-              uniNav.reLaunch('/pages/login/login')
+              useRouter().reLaunch('/pages/login/login')
               return reject(new Error('快捷登录失败，请重试'))
             }
 
             // 登录失败处理
             if (err.data.status !== 200) {
               this.resetToken()
-              uniNav.reLaunch('/pages/login/login')
+              useRouter().reLaunch('/pages/login/login')
               return reject(new Error(err.data.msg ?? '快捷登录失败，请重试'))
             }
 
@@ -192,14 +191,14 @@ export const useAppStore = defineStore('app', {
           .then(() => {
             this.resetToken()
             this.isLastLoginWechat = false
-            uniNav.reLaunch('/pages/login/login')
+            useRouter().reLaunch('/pages/login/login')
             toast.hideLoading()
             resolve()
           })
           .catch((_err) => {
             this.resetToken()
             this.isLastLoginWechat = false
-            uniNav.reLaunch('/pages/login/login')
+            useRouter().reLaunch('/pages/login/login')
             toast.hideLoading()
             resolve()
           })

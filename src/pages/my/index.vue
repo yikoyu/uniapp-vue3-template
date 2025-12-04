@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAppStore } from '@/stores/app'
-import { uniNav } from '@/utils'
 
 definePage({
   layout: 'tabbar',
@@ -12,7 +11,7 @@ definePage({
 
 function toLogin() {
   useAppStore().logout().finally(() => {
-    uniNav.navigateTo('/pages/login/login')
+    useRouter().navigate('/pages/login/login')
   })
 }
 </script>

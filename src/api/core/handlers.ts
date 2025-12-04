@@ -1,6 +1,5 @@
 import type { Method } from 'alova'
 import { useAppStore } from '@/stores/app'
-import { uniNav } from '@/utils'
 
 // Custom error class for API errors
 export class ApiError extends Error {
@@ -75,7 +74,7 @@ export class AlovaHandler {
       uni.showToast({ title: '登录已过期，请重新登录！', duration: 500, icon: 'none' })
       const timer = setTimeout(() => {
         clearTimeout(timer)
-        uniNav.reLaunch('/pages/login/login')
+        useRouter().reLaunch('/pages/login/login')
       }, 500)
 
       throw new ApiError('登录已过期，请重新登录！', statusCode, data)
@@ -112,7 +111,7 @@ export class AlovaHandler {
       uni.showToast({ title: '登录已过期，请重新登录！', duration: 500, icon: 'none' })
       const timer = setTimeout(() => {
         clearTimeout(timer)
-        uniNav.reLaunch('/pages/login/login')
+        useRouter().reLaunch('/pages/login/login')
       }, 500)
       throw new ApiError('登录已过期，请重新登录！', error.status, error.data)
     }

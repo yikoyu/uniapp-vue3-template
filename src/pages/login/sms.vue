@@ -7,7 +7,6 @@ import NavBar from '@/components/NavBar/index.vue'
 import SliderVerifiy from '@/components/SliderVerifiy/index.vue'
 import { useAppStore } from '@/stores/app'
 import { toast } from '@/utils/toast'
-import { uniNav } from '@/utils/uniNav'
 
 definePage({
   style: {
@@ -16,11 +15,7 @@ definePage({
   },
 })
 
-const reLaunchUrl = ref('')
-
-onLoad((query) => {
-  reLaunchUrl.value = decodeURIComponent(query?.redirect || '')
-})
+const reLaunchUrl = useQuery('redirect')
 
 const app = useAppStore()
 const { start, counter, isActive } = useCountDown()
@@ -79,13 +74,12 @@ async function onLogin() {
   try {
     const token = await app.mLogin(form.phone, form.code)
     if (token && !unref(isBack)) {
-      uni.reLaunch({
-        url: reLaunchUrl.value || '/pages/home/home',
-      })
+      console.log('reLaunchUrl.value :>> ', reLaunchUrl.value)
+      useRouter().reLaunch(reLaunchUrl.value || '/pages/home/home')
     }
 
     if (token && unref(isBack))
-      uniNav.navigateBack()
+      useRouter().back()
   }
   catch (error) {
     console.log('[mLogin] error :>> ', error)

@@ -27,6 +27,12 @@ echarts.use([
   CanvasRenderer,
 ])
 
+const query = useQueryAll()
+const resData = useQuery('resData')
+
+watchEffect(() => console.log('全部参数 :>> ', query.value))
+watchEffect(() => console.log('参数 [resData] :>> ', resData.value))
+
 // 图表配置
 const option = ref({
   tooltip: {

@@ -3,9 +3,8 @@ import { useAppStore } from '@/stores/app'
 import { toast } from '@/utils/toast'
 
 export function useWechatLogin(hooks?: Fn) {
+  const reLaunchUrl = useQuery('redirect')
   const selected = ref(false)
-
-  const reLaunchUrl = ref('')
 
   async function getPhoneNumber(e: Recordable) {
     if (!unref(selected)) {
@@ -27,7 +26,7 @@ export function useWechatLogin(hooks?: Fn) {
       }
 
       if (token) {
-        uni.reLaunch({ url: reLaunchUrl.value || '/pages/home/home' })
+        useRouter().reLaunch(reLaunchUrl.value || '/pages/home/home')
       }
     }
     catch (error: any) {
