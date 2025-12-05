@@ -30,7 +30,7 @@ export default defineConfig(async ({ command, mode }) => {
     },
     plugins: [
       // https://github.com/uni-helper/vite-plugin-uni-manifest
-      UniHelperManifest(),
+      UniHelperManifest({ insertFinalNewline: true }),
       // https://github.com/uni-helper/vite-plugin-uni-pages
       UniHelperPages({
         subPackages: ['src/pages-echarts'],

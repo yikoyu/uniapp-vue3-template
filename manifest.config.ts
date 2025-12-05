@@ -17,6 +17,7 @@ const {
   VITE_WECHAT_APPID,
 } = env
 
+createLogger().info(`[manifest] mode = ${getMode()}`)
 createLogger().info(`[manifest] set VITE_APP_NAME = ${VITE_APP_NAME}`)
 createLogger().info(`[manifest] set VITE_WECHAT_APPID = ${VITE_WECHAT_APPID}`)
 
