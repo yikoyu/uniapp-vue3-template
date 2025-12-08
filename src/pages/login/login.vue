@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { Enum } from 'enum-plus'
+
 import NavBar from '@/components/NavBar/index.vue'
 import { toast } from '@/utils'
 import { useWechatLogin } from './_hooks/useWechatLogin'
@@ -14,6 +16,13 @@ definePage({
 
 const { reLaunchUrl, selected, getPhoneNumber } = useWechatLogin()
 
+const LinkEnum = Enum({
+  /** 用户服务协议 */
+  USER_SERVICE: { value: 0, label: '用户协议', link: import.meta.env.VITE_USER_SERVICE_AGREEMENT_LINK },
+  /** 隐私政策 */
+  PRIVACY: { value: 1, label: '隐私条款', link: import.meta.env.VITE_PRIVACY_AGREEMENT_LINK },
+})
+
 function goToSmsLogin() {
   if (!unref(selected)) {
     toast.show('请阅读并勾选协议')
@@ -25,9 +34,14 @@ function goToSmsLogin() {
   })
 }
 
-function toURL(value: number) {
-  (value === 0) && console.log('用户协议')
-  ;(value === 1) && console.log('隐私条款')
+function toURL(value: typeof LinkEnum.valueType) {
+  if (value === LinkEnum.USER_SERVICE) {
+    console.log('用户协议')
+  }
+
+  if (value === LinkEnum.PRIVACY) {
+    console.log('隐私条款')
+  }
 }
 </script>
 
@@ -71,9 +85,12 @@ function toURL(value: number) {
 
         <view>
           我已阅读并同意
-          <view class="login__privacy-agreement__btn" @click.stop="toURL(0)">《用户协议》</view>
-
-          <view class="login__privacy-agreement__btn" @click.stop="toURL(1)">《隐私条款》</view>
+          <view class="login__privacy-agreement__btn" @click.stop="toURL(LinkEnum.USER_SERVICE)">
+            《{{ LinkEnum.label(LinkEnum.USER_SERVICE) }}》
+          </view>
+          <view class="login__privacy-agreement__btn" @click.stop="toURL(LinkEnum.PRIVACY)">
+            《{{ LinkEnum.label(LinkEnum.PRIVACY) }}》
+          </view>
         </view>
       </label>
     </view>
