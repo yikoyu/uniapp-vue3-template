@@ -80,9 +80,18 @@ export default defineConfig(async ({ command, mode }) => {
             from: 'alova/client',
             imports: ['usePagination', 'useRequest', 'useWatcher', 'useForm'],
           },
+          // api 只导出这两个
+          {
+            from: '@/api/_gen',
+            imports: ['Apis'],
+          },
+          {
+            from: '@/api/core/instance',
+            imports: ['alovaInstance'],
+          },
         ],
         dts: 'types/_auto-import.d.ts',
-        dirs: ['src/hooks', 'src/api'], // 自动导入 hooks
+        dirs: ['src/hooks'], // 自动导入 hooks
         vueTemplate: true, // default false
       }),
       // https://github.com/antfu/unocss

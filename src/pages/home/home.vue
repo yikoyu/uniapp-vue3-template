@@ -8,6 +8,7 @@ definePage({
   style: {
     navigationBarTitleText: '',
     navigationStyle: 'custom',
+    enablePullDownRefresh: true,
   },
 })
 
@@ -87,6 +88,29 @@ async function getUserInfo() {
   const data = await useAppStore().getLoginUserInfo()
   uni.showToast({ title: data?.userName })
 }
+
+const { loading, data: mockList, total, isLastPage, page, reload } = usePagination(
+  (pageNo, pageSize) => alovaInstance.Get<any>('/mockList', {
+    meta: { authRole: null },
+    params: { pageNo, pageSize },
+  }),
+  {
+    append: true,
+    initialData: {
+      pageNo: 1,
+      pageSize: 20,
+      rows: [],
+      totalRows: 0,
+    },
+    initialPage: 1,
+    initialPageSize: 20,
+    total: response => response.data?.totalRows || 0,
+    data: response => response.data?.rows || [],
+  },
+).onComplete(() => uni.stopPullDownRefresh())
+
+onReachBottom(() => page.value++)
+onPullDownRefresh(() => reload())
 </script>
 
 <template>
@@ -126,8 +150,14 @@ async function getUserInfo() {
     </WdButton>
 
     <div>
-      <div v-for="item in 100" :key="item">
-        {{ item }}
+      <div v-for="item in mockList" :key="item.id" class="center py-8 even:bg-[#F9F9F9]">
+        {{ item.value }}
+      </div>
+      <div v-if="isLastPage" class="center bg-[#E1E1E1] py-4">
+        已经到底了~(总数{{ total }})
+      </div>
+      <div v-else-if="loading" class="center bg-[#E1E1E1] py-4">
+        数据装载中...
       </div>
     </div>
   </view>

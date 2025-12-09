@@ -143,4 +143,30 @@ export default defineMock({
       },
     }
   },
+  '/mockList': ({ query }) => {
+    console.log(`[Mock] GET /mockList`, query)
+
+    const pageNo = Number(query.pageNo)
+    const pageSize = Number(query.pageSize)
+    const TOTALROWS = 123
+
+    const start = (pageNo - 1) * pageSize
+    const limit = TOTALROWS > (start + pageSize) ? pageSize : TOTALROWS - start
+
+    const rows = Array.from({ length: limit }).fill(null).map((k, i) => ({
+      id: String(i + start + 1),
+      value: String(i + start + 1),
+    }))
+
+    return {
+      status: 200,
+      data: {
+        pageNo,
+        pageSize,
+        rows,
+        totalRows: 123,
+      },
+      msg: 'OK',
+    }
+  },
 }, true)

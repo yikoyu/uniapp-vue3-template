@@ -13,6 +13,4 @@ export const $$userConfigMap = withConfigType({})
 // Create the global Apis object
 const Apis = createApis(alovaInstance, $$userConfigMap)
 
-// Export both default and named export for AutoImport
-export default Apis
 export { Apis }
