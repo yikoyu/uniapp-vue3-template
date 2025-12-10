@@ -1,5 +1,10 @@
+catalogMode: manual
+shellEmulator: true
+trustPolicy: off
+
 onlyBuiltDependencies:
   - '@uni-helper/unocss-preset-uni'
   - core-js
   - esbuild
+  - simple-git-hooks
   - vue-demi

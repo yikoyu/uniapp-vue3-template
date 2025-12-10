@@ -2,6 +2,7 @@ import process from 'node:process'
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
+  pnpm: false,
   unocss: true,
   vue: true,
   ignores: [
