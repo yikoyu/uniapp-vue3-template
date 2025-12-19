@@ -135,9 +135,6 @@ importers:
       '@types/qs':
         specifier: ^6.14.0
         version: 6.14.0
-      '@types/wechat-miniprogram':
-        specifier: ^3.4.9
-        version: 3.4.9
       '@uni-helper/plugin-uni':
         specifier: ^0.1.0
         version: 0.1.0(@dcloudio/vite-plugin-uni@3.0.0-4080520251106001(@vueuse/core@9.13.0(vue@3.4.21(typescript@5.9.3)))(postcss@8.5.6)(rollup@4.24.0)(vite@5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0))(vue@3.4.21(typescript@5.9.3)))
@@ -195,6 +192,9 @@ importers:
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
+      miniprogram-api-typings:
+        specifier: ^4.1.2
+        version: 4.1.2
       rollup-plugin-visualizer:
         specifier: ^6.0.5
         version: 6.0.5(rollup@4.24.0)
@@ -2318,9 +2318,6 @@ packages:
 
   '@types/web-bluetooth@0.0.16':
     resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
-
-  '@types/wechat-miniprogram@3.4.9':
-    resolution: {integrity: sha512-3JONYYpeOnpu507qv9eOZpiF2DIrb6MTM8iYxGE8wjttBa6NOrhxNJdlvGONTx9vVV7jbFAs472qcK2s2C37VA==}
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -5055,6 +5052,9 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  miniprogram-api-typings@4.1.2:
+    resolution: {integrity: sha512-VmIgxal0GU3nHwsH2UNaRh8jNHG/kauG08Z4W/qiJ1Iubvme48aE+q3grpT9ZLBArMKmSuKlsTq+uPPHSGr0rA==}
 
   minizlib@2.1.2:
     resolution: {integrity: sha512-bAxsR8BVfj60DWXHE3u30oHzfl4G7khkSuPW+qvpd7jFRHm7dLxOjUk1EHACJ/hxLY8phGJ0YhYHZo7jil7Qdg==}
@@ -9787,8 +9787,6 @@ snapshots:
 
   '@types/web-bluetooth@0.0.16': {}
 
-  '@types/wechat-miniprogram@3.4.9': {}
-
   '@types/yargs-parser@21.0.3': {}
 
   '@types/yargs@16.0.9':
@@ -10024,18 +10022,18 @@ snapshots:
 
   '@unocss-applet/preset-applet@0.12.2':
     dependencies:
-      '@unocss/core': 66.5.9
+      '@unocss/core': 66.5.10
       '@unocss/preset-mini': 66.5.9
       '@unocss/preset-wind3': 66.5.9
       '@unocss/preset-wind4': 66.5.9
 
   '@unocss-applet/preset-rem-rpx@0.12.2':
     dependencies:
-      '@unocss/core': 66.5.9
+      '@unocss/core': 66.5.10
 
   '@unocss-applet/transformer-attributify@0.12.2':
     dependencies:
-      '@unocss/core': 66.5.9
+      '@unocss/core': 66.5.10
       magic-string: 0.30.21
 
   '@unocss/astro@66.0.0(vite@5.2.8(@types/node@22.10.1)(sass@1.78.0)(terser@5.18.0))(vue@3.4.21(typescript@5.9.3))':
@@ -10206,7 +10204,7 @@ snapshots:
 
   '@unocss/rule-utils@66.5.9':
     dependencies:
-      '@unocss/core': 66.5.9
+      '@unocss/core': 66.5.10
       magic-string: 0.30.21
 
   '@unocss/transformer-attributify-jsx@66.0.0':
@@ -13232,6 +13230,8 @@ snapshots:
   minipass@5.0.0: {}
 
   minipass@7.1.2: {}
+
+  miniprogram-api-typings@4.1.2: {}
 
   minizlib@2.1.2:
     dependencies:

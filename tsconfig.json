@@ -10,17 +10,11 @@
     "resolveJsonModule": true,
     "types": [
       "node",
-      // uni API 相关的 TypeScript 类型
       "@dcloudio/types",
-      // wx API 相关的 TypeScript 类型
-      "@types/wechat-miniprogram",
-      // 为 uni-app 组件提供 TypeScript 类型
+      "miniprogram-api-typings",
       "@uni-helper/uni-types",
-      // 为 @uni-helper/vite-plugin-uni-pages 组件提供 TypeScript 类型
       "@uni-helper/vite-plugin-uni-pages",
-      // 为 wot-design-uni 组件提供 TypeScript 类型
       "wot-design-uni/global",
-      // 为 uni-echarts 组件提供 TypeScript 类型
       "uni-echarts/global"
     ],
     "noImplicitAny": false,
