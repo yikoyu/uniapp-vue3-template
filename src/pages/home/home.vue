@@ -89,6 +89,10 @@ async function getUserInfo() {
   uni.showToast({ title: data?.userName })
 }
 
+function toCheckPerm() {
+  useRouter().navigate('/pages/home/check-perm')
+}
+
 const { loading, data: mockList, total, isLastPage, page, reload } = usePagination(
   (pageNo, pageSize) => alovaInstance.Get<any>('/mockList', {
     meta: { authRole: null },
@@ -147,6 +151,10 @@ onPullDownRefresh(() => reload())
 
     <WdButton @click="toEcharts">
       Echarts
+    </WdButton>
+
+    <WdButton @click="toCheckPerm">
+      检查权限
     </WdButton>
 
     <div>

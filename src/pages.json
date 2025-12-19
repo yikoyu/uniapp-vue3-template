@@ -48,7 +48,13 @@
       "style": {
         "navigationBarTitleText": ""
       }
+    },
+    // #ifdef MP-WEIXIN
+    {
+      "path": "pages/home/check-perm",
+      "type": "page"
     }
+    // #endif
   ],
   "subPackages": [
     {
