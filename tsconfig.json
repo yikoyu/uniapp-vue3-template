@@ -5,7 +5,10 @@
     "baseUrl": ".",
     "moduleResolution": "Bundler",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@packages/*": ["./src/packages/*"],
+      "@sub-static/*": ["./src/packages/sub-static/_components/*"],
+      "@sub-echarts/*": ["./src/packages/sub-echarts/_components/*"]
     },
     "resolveJsonModule": true,
     "types": [
@@ -14,6 +17,7 @@
       "miniprogram-api-typings",
       "@uni-helper/uni-types",
       "@uni-helper/vite-plugin-uni-pages",
+      "@uni-ku/bundle-optimizer/client",
       "wot-design-uni/global",
       "uni-echarts/global"
     ],

@@ -1,7 +1,15 @@
 <script lang="ts" setup>
+import StaticImage from '@sub-static/StaticImage.vue'
 import { useAppStore } from '@/stores/app'
 
+defineOptions({
+  componentPlaceholder: {
+    StaticImage: 'view',
+  },
+})
+
 definePage({
+  type: 'home',
   layout: 'tabbar',
   style: {
     navigationBarTitleText: '',
@@ -20,9 +28,10 @@ function toLogin() {
   <NavBar title="我的" />
 
   <div class="center flex-col pt-4">
-    <div class="rounded-full bg-[#ffd8cb] p-4">
+    <!-- <div class="rounded-full bg-[#ffd8cb] p-4">
       <div class="i-carbon:user h-8 w-8 color-[#FF5631]" />
-    </div>
+    </div> -->
+    <StaticImage image-type="AvatarPng" custom-class="h-18 w-18 rounded-full" />
 
     <div class="pt-3 text-lg font-bold">
       13900000001

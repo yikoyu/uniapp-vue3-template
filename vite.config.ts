@@ -1,3 +1,4 @@
+import path from 'node:path'
 import process from 'node:process'
 import Uni from '@uni-helper/plugin-uni'
 import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
@@ -28,14 +29,29 @@ export default defineConfig(async ({ command, mode }) => {
     optimizeDeps: {
       exclude: isBuild ? [] : ['wot-design-uni', 'uni-echarts'],
     },
+    resolve: {
+      alias: {
+        // 原有基础别名（保留，不影响其他场景）
+        '@/*': path.resolve(__dirname, 'src'),
+        '@packages': path.resolve(__dirname, 'src/packages'),
+        // 核心优化：直接映射到高频深层目录，跳过sub-xxx中间层级
+        '@sub-static': path.resolve(__dirname, 'src/packages/sub-static/_components'), // 直接对应 _components 目录
+        '@sub-echarts': path.resolve(__dirname, 'src/packages/sub-echarts/_components'), // 直接对应 _components 目录
+      },
+    },
     plugins: [
       // https://github.com/uni-helper/vite-plugin-uni-manifest
       UniHelperManifest({ insertFinalNewline: true }),
       // https://github.com/uni-helper/vite-plugin-uni-pages
       UniHelperPages({
-        subPackages: ['src/pages-echarts'],
+        subPackages: [
+          'src/packages/sub-static',
+          'src/packages/sub-echarts',
+        ],
         dts: 'types/_uni-pages.d.ts',
-        exclude: ['**/_*/**/*'], // pages文件下 _ 排除的页面
+        exclude: [
+          '**/_*/**/*', // pages文件下 _ 排除的页面
+        ],
       }),
       // https://github.com/uni-helper/vite-plugin-uni-layouts
       UniHelperLayouts(),
@@ -59,15 +75,6 @@ export default defineConfig(async ({ command, mode }) => {
           'optimization': true,
           'async-import': true,
           'async-component': true,
-        },
-        dts: {
-          'base': 'types',
-          'async-import': {
-            name: '_async-import.d.ts',
-          },
-          'async-component': {
-            name: '_async-component.d.ts',
-          },
         },
         logger: isBuild,
       }),
