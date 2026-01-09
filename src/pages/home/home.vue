@@ -70,7 +70,7 @@ function resetAppStore() {
 }
 
 function toEcharts() {
-  useRouter().navigate('/pages-echarts/bar/index', {
+  useRouter().navigate('/pages/home/echarts', {
     a: 1,
     b: '2',
     c: true,

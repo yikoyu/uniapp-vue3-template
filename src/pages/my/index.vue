@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import AvatarPng from '@/packages/sub-static/static/avatar.png'
 import { useAppStore } from '@/stores/app'
 
 definePage({
@@ -20,9 +21,10 @@ function toLogin() {
   <NavBar title="我的" />
 
   <div class="center flex-col pt-4">
-    <div class="rounded-full bg-[#ffd8cb] p-4">
+    <!-- <div class="rounded-full bg-[#ffd8cb] p-4">
       <div class="i-carbon:user h-8 w-8 color-[#FF5631]" />
-    </div>
+    </div> -->
+    <image class="h-18 w-18 rounded-full" :src="AvatarPng" />
 
     <div class="pt-3 text-lg font-bold">
       13900000001

@@ -33,9 +33,14 @@ export default defineConfig(async ({ command, mode }) => {
       UniHelperManifest({ insertFinalNewline: true }),
       // https://github.com/uni-helper/vite-plugin-uni-pages
       UniHelperPages({
-        subPackages: ['src/pages-echarts'],
+        subPackages: [
+          'src/packages/sub-static',
+          'src/packages/sub-echarts',
+        ],
         dts: 'types/_uni-pages.d.ts',
-        exclude: ['**/_*/**/*'], // pages文件下 _ 排除的页面
+        exclude: [
+          '**/_*/**/*', // pages文件下 _ 排除的页面
+        ],
       }),
       // https://github.com/uni-helper/vite-plugin-uni-layouts
       UniHelperLayouts(),
@@ -59,15 +64,6 @@ export default defineConfig(async ({ command, mode }) => {
           'optimization': true,
           'async-import': true,
           'async-component': true,
-        },
-        dts: {
-          'base': 'types',
-          'async-import': {
-            name: '_async-import.d.ts',
-          },
-          'async-component': {
-            name: '_async-component.d.ts',
-          },
         },
         logger: isBuild,
       }),
