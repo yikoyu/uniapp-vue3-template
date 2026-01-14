@@ -29,7 +29,7 @@ function onChange({ value }) {
 
 <template>
   <WdTabbar :model-value="value" safe-area-inset-bottom placeholder fixed @change="onChange">
-    <WdTabbarItem title="房态" name="pages/home/home" icon="home" />
+    <WdTabbarItem title="首页" name="pages/home/home" icon="home" />
     <WdTabbarItem title="我的" name="pages/my/index" icon="user" />
   </WdTabbar>
 </template>
