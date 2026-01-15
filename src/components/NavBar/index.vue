@@ -160,7 +160,7 @@ $prefix: nav-bar;
       left: 20rpx;
       transform: translateY(-50%);
 
-      @include back();
+      @include back;
     }
 
     &__title {

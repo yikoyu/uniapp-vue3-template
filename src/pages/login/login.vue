@@ -104,7 +104,7 @@ function toURL(value: typeof LinkEnum.valueType) {
 /* radio 样式修改 */
 /* stylelint-disable-next-line selector-type-no-unknown */
 radio {
-  @include custom-radio();
+  @include custom-radio;
 }
 </style>
 
@@ -149,7 +149,7 @@ radio {
       width: 100%;
 
       &.is-wechat {
-        @include button();
+        @include button;
       }
 
       &.is-phone {

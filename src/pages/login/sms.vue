@@ -160,11 +160,11 @@ async function onLogin() {
         line-height: $input-line-height;
         color: $uni-color-primary;
         text-align: right;
-        background-color: rgba($color: #fff, $alpha: 0%);
+        background-color: rgb(255 255 255 / 0%);
 
         &[disabled] {
           color: #c6c6c6;
-          background-color: rgba($color: #fff, $alpha: 0%);
+          background-color: rgb(255 255 255 / 0%);
         }
 
         &::after {
@@ -190,7 +190,7 @@ async function onLogin() {
     &__btn {
       margin-top: 60rpx;
 
-      @include button();
+      @include button;
     }
   }
 }

@@ -305,7 +305,7 @@ $prefix: slider-verifiy;
         position: relative;
         display: inline-block;
 
-        @include close-icon();
+        @include close-icon;
       }
     }
 
