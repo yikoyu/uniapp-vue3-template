@@ -5,9 +5,13 @@ import { useAppStore } from '@/stores/app'
 definePage({
   layout: 'tabbar',
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
-    enablePullDownRefresh: true,
+    'navigationBarTitleText': '',
+    'navigationStyle': 'custom',
+    'enablePullDownRefresh': true,
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES',
+    },
   },
 })
 

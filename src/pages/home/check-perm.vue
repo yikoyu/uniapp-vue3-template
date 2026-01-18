@@ -1,4 +1,10 @@
 <script setup lang="ts">
+definePage({
+  style: {
+    navigationBarTitleText: '蓝牙权限检查',
+  },
+})
+
 // 解构Hook状态和方法
 const {
   permissionState,
@@ -17,7 +23,7 @@ function clearError() {
 /**
  * 格式化权限状态文本
  */
-function getAuthText(authState: 'authorized' | 'denied' | 'not determined' | undefined) {
+function getAuthText(authState: 'authorized' | 'denied' | 'not determined' | 'config error' | undefined) {
   switch (authState) {
     case 'authorized':
       return '✅ 已授权'
@@ -25,6 +31,8 @@ function getAuthText(authState: 'authorized' | 'denied' | 'not determined' | und
       return '❌ 已拒绝'
     case 'not determined':
       return '⚠️ 未确定'
+    case 'config error':
+      return '🔧 配置错误'
     default:
       return '❓ 未知状态'
   }
@@ -33,7 +41,7 @@ function getAuthText(authState: 'authorized' | 'denied' | 'not determined' | und
 /**
  * 匹配权限状态样式类型
  */
-function getAuthStatusType(authState: 'authorized' | 'denied' | 'not determined' | undefined) {
+function getAuthStatusType(authState: 'authorized' | 'denied' | 'not determined' | 'config error' | undefined) {
   switch (authState) {
     case 'authorized':
       return 'success'
@@ -41,6 +49,8 @@ function getAuthStatusType(authState: 'authorized' | 'denied' | 'not determined'
       return 'error'
     case 'not determined':
       return 'warning'
+    case 'config error':
+      return 'error'
     default:
       return 'default'
   }
@@ -127,21 +137,13 @@ onShow(async () => {
     <!-- 权限状态卡片（原生卡片样式） -->
     <view class="permission-card">
       <view class="card-title">
-        全量权限/开关状态（微信小程序）
+        全量权限/开关状态（小程序）
       </view>
 
       <!-- 1. 基础信息区 -->
       <view class="state-section">
         <view class="section-title">
           基础信息
-        </view>
-        <view class="state-item">
-          <text class="item-label">
-            微信版本：
-          </text>
-          <text class="item-value">
-            {{ permissionState.wxVersion || '未知' }}
-          </text>
         </view>
         <view class="state-item">
           <text class="item-label">
@@ -176,10 +178,10 @@ onShow(async () => {
         </view>
       </view>
 
-      <!-- 3. 微信系统级权限（Android专属：微信在系统中的授权） -->
+      <!-- 3. 系统级权限（Android专属：APP在系统中的授权） -->
       <view v-if="!permissionState.isIOS" class="state-section">
         <view class="section-title">
-          微信系统级权限（微信APP在手机系统中的授权）
+          APP级权限（APP在手机系统中的授权）
         </view>
         <view class="state-item">
           <text class="item-label">
@@ -199,10 +201,10 @@ onShow(async () => {
         </view>
       </view>
 
-      <!-- 4. 微信系统级权限（iOS：仅蓝牙权限，无定位开关/权限依赖） -->
+      <!-- 4. APP级权限（iOS：仅蓝牙权限，无定位开关/权限依赖） -->
       <view v-if="permissionState.isIOS" class="state-section">
         <view class="section-title">
-          微信系统级权限（微信APP在手机系统中的授权）
+          APP级权限（APP在手机系统中的授权）
         </view>
         <view class="state-item">
           <text class="item-label">
@@ -214,10 +216,10 @@ onShow(async () => {
         </view>
       </view>
 
-      <!-- 5. 小程序应用级权限（小程序在微信中的授权） -->
+      <!-- 5. 小程序应用级权限（小程序的授权） -->
       <view class="state-section">
         <view class="section-title">
-          小程序应用级权限（当前小程序在微信中的授权）
+          小程序应用级权限（当前小程序中的授权）
         </view>
         <view class="state-item">
           <text class="item-label">
@@ -225,14 +227,6 @@ onShow(async () => {
           </text>
           <text class="item-value status-{{ permissionState.bluetoothScopeAuth ? 'success' : 'error' }}">
             {{ permissionState.bluetoothScopeAuth ? '✅ 已授权' : '❌ 未授权' }}
-          </text>
-        </view>
-        <view v-if="!permissionState.isIOS" class="state-item">
-          <text class="item-label">
-            定位权限：
-          </text>
-          <text class="item-value status-{{ permissionState.locationScopeAuth ? 'success' : 'error' }}">
-            {{ permissionState.locationScopeAuth ? '✅ 已授权' : '❌ 未授权' }}
           </text>
         </view>
       </view>

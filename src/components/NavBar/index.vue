@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
+import { isMpAlipay } from '@uni-helper/uni-env'
 import { isBoolean, isFunction } from 'es-toolkit'
 import { computed, unref } from 'vue'
 
@@ -26,6 +27,11 @@ const props = withDefaults(defineProps<Props>(), {
 const { statusBarHeight, navBarHeight, mainHeight } = useNavBarHeight()
 
 const hasBack = computed(() => {
+  // 支付宝小程序使用系统的返回按钮
+  if (isMpAlipay) {
+    return false
+  }
+
   if (isBoolean(props.back))
     return props.back
 

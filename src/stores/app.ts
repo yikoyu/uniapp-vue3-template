@@ -81,6 +81,8 @@ export const useAppStore = defineStore('app', {
             resolve(this.accessToken)
           })
           .catch((err) => {
+            toast.hideLoading()
+
             reject(err)
           })
       })
@@ -159,6 +161,8 @@ export const useAppStore = defineStore('app', {
             resolve(this.accessToken)
           })
           .catch((err) => {
+            toast.hideLoading()
+
             reject(err)
           })
       })

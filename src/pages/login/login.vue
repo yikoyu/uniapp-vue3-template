@@ -9,8 +9,12 @@ import { useWechatLogin } from './_hooks/useWechatLogin'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    'navigationBarTitleText': '',
+    'navigationStyle': 'custom',
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES',
+    },
   },
 })
 
@@ -55,7 +59,7 @@ function toURL(value: typeof LinkEnum.valueType) {
       <!-- <view class="login-content__title">{{ APP_NAME }}</view> -->
 
       <button
-        v-show="selected"
+        v-if="selected"
         class="login-content__btn is-wechat"
         hover-class="active"
         open-type="getPhoneNumber"
@@ -65,7 +69,7 @@ function toURL(value: typeof LinkEnum.valueType) {
       </button>
 
       <button
-        v-show="!selected"
+        v-if="!selected"
         class="login-content__btn is-wechat"
         hover-class="active"
         @click="getPhoneNumber"

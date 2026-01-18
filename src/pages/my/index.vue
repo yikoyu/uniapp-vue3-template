@@ -12,15 +12,17 @@ definePage({
   type: 'home',
   layout: 'tabbar',
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    'navigationBarTitleText': '',
+    'navigationStyle': 'custom',
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES',
+    },
   },
 })
 
 function toLogin() {
-  useAppStore().logout().finally(() => {
-    useRouter().navigate('/pages/login/login')
-  })
+  useAppStore().logout()
 }
 </script>
 

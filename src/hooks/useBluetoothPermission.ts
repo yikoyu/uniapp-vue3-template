@@ -1,4 +1,6 @@
+import { isMpAlipay } from '@uni-helper/uni-env'
 import { reactive, ref } from 'vue'
+import { useAuthorize } from './useAuthorize'
 
 /**
  * 权限引导弹框静态类（补充 Android 专属引导）
@@ -7,14 +9,12 @@ class PermissionModal {
   // 1. 系统级蓝牙开关未开启（Android）
   static bluetoothSystemSwitchModal() {
     return new Promise<never>((_, reject) => {
-      wx.showModal({
+      uni.showModal({
         title: '蓝牙开关未开启',
-        content: 'Android 系统蓝牙开关未开启，请前往系统设置开启蓝牙后重试',
-        confirmText: '去设置',
-        cancelText: '取消',
+        content: 'Android 系统蓝牙开关未开启，请开启系统牙后重试',
+        confirmText: '确定',
+        showCancel: false,
         success: (res) => {
-          if (res.confirm)
-            wx.openAppAuthorizeSetting() // 引导到系统设置
           reject(new Error('系统蓝牙开关未开启，无法使用蓝牙功能'))
         },
         fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
@@ -25,14 +25,12 @@ class PermissionModal {
   // 2. 系统级定位开关未开启（Android）
   static locationSystemSwitchModal() {
     return new Promise<never>((_, reject) => {
-      wx.showModal({
+      uni.showModal({
         title: '定位开关未开启',
-        content: 'Android 系统定位开关未开启，请前往系统设置开启定位后重试',
-        confirmText: '去设置',
-        cancelText: '取消',
+        content: 'Android 系统定位开关未开启，请开启系统定位后重试',
+        confirmText: '确定',
+        showCancel: false,
         success: (res) => {
-          if (res.confirm)
-            wx.openAppAuthorizeSetting()
           reject(new Error('系统定位开关未开启，无法使用蓝牙功能'))
         },
         fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
@@ -43,15 +41,19 @@ class PermissionModal {
   // 3. APP 级蓝牙权限未授权
   static bluetoothAppAuthorizeModal() {
     return new Promise<never>((_, reject) => {
-      wx.showModal({
-        title: '微信 APP 级蓝牙权限未授权',
-        content: '需要授予微信系统级蓝牙权限才能使用相关功能，请前往微信设置开启',
+      uni.showModal({
+        title: 'APP 蓝牙权限未授权',
+        content: '需要授予APP系统级蓝牙权限才能使用相关功能，请前往APP设置开启',
         confirmText: '去设置',
         cancelText: '取消',
         success: (res) => {
-          if (res.confirm)
-            wx.openAppAuthorizeSetting()
-          reject(new Error('微信系统级蓝牙权限未授权，无法使用蓝牙功能'))
+          if (res.confirm) {
+            if (isMpAlipay)
+              my.showAuthGuide({ authType: 'BLUETOOTH' })
+            else
+              uni.openAppAuthorizeSetting() // 引导到系统设置
+          }
+          reject(new Error('APP 蓝牙权限未授权，无法使用蓝牙功能'))
         },
         fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
       })
@@ -61,15 +63,19 @@ class PermissionModal {
   // 4. APP 级定位权限未授权（Android）
   static locationAppAuthorizeModal() {
     return new Promise<never>((_, reject) => {
-      wx.showModal({
-        title: '微信 APP 定位权限未授权',
-        content: 'Android 系统需要微信定位权限来辅助蓝牙功能，请前往微信权限设置开启',
+      uni.showModal({
+        title: 'APP 定位权限未授权',
+        content: 'Android 系统需要APP定位权限来辅助蓝牙功能，请前往APP权限设置开启',
         confirmText: '去设置',
         cancelText: '取消',
         success: (res) => {
-          if (res.confirm)
-            wx.openAppAuthorizeSetting()
-          reject(new Error('微信 APP 级定位权限未授权，无法使用蓝牙功能'))
+          if (res.confirm) {
+            if (isMpAlipay)
+              my.showAuthGuide({ authType: 'LBS' })
+            else
+              uni.openAppAuthorizeSetting() // 引导到系统设置
+          }
+          reject(new Error('APP 定位权限未授权，无法使用蓝牙功能'))
         },
         fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
       })
@@ -78,36 +84,21 @@ class PermissionModal {
 
   // 5. 小程序蓝牙权限未授权
   static bluetoothScopeModal(isIOS: boolean) {
-    return new Promise<never>((_, reject) => {
-      wx.showModal({
-        title: '蓝牙权限未授权',
-        content: `${isIOS ? 'iOS' : '安卓'}系统需要蓝牙权限才能使用相关功能，请前往小程序设置开启`,
-        confirmText: '去设置',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm)
-            wx.openSetting()
-          reject(new Error('蓝牙权限未授权，无法使用蓝牙功能'))
-        },
-        fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
-      })
-    })
-  }
-
-  // 6. 小程序定位权限未授权（Android）
-  static locationScopeModal() {
-    return new Promise<never>((_, reject) => {
-      wx.showModal({
-        title: '定位权限未授权',
-        content: '安卓系统需要定位权限才能使用蓝牙功能，请前往小程序设置开启',
-        confirmText: '去设置',
-        cancelText: '取消',
-        success: (res) => {
-          if (res.confirm)
-            wx.openSetting()
-          reject(new Error('安卓定位权限未授权，无法使用蓝牙功能'))
-        },
-        fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
+    return new Promise<void>((_, reject) => {
+      useAuthorize().bluetooth().catch((result) => {
+        uni.showModal({
+          title: '蓝牙权限未授权',
+          content: `${isIOS ? 'iOS' : '安卓'}系统需要蓝牙权限才能使用相关功能，请前往小程序设置开启`,
+          confirmText: '去设置',
+          cancelText: '取消',
+          success: (res) => {
+            if (res.confirm) {
+              uni.openSetting()
+            }
+            reject(new Error('蓝牙权限未授权，无法使用蓝牙功能'))
+          },
+          fail: err => reject(new Error(`弹框调用失败：${err.errMsg}`)),
+        })
       })
     })
   }
@@ -119,13 +110,11 @@ class PermissionModal {
 interface PermissionState {
   // 基础信息
   isIOS: boolean
-  wxVersion: string
   // 核心权限
   bluetoothScopeAuth: boolean // 小程序蓝牙权限
-  locationScopeAuth: boolean // 小程序定位权限
-  bluetoothSystemAuth: WechatMiniprogram.AppAuthorizeSetting['bluetoothAuthorized'] // 微信系统级蓝牙权限
+  bluetoothSystemAuth: UniNamespace.GetAppAuthorizeSettingResult['bluetoothAuthorized'] // APP 级蓝牙权限
   // Android 专属状态
-  locationAppAuthorized: WechatMiniprogram.AppAuthorizeSetting['locationAuthorized'] // APP 级定位权限
+  locationAppAuthorized: UniNamespace.GetAppAuthorizeSettingResult['locationAuthorized'] // APP 级定位权限
   bluetoothSystemSwitch: boolean // 系统级蓝牙开关（Android）
   locationSystemSwitch: boolean // 系统级定位开关（Android）
 }
@@ -140,9 +129,7 @@ export function useBluetoothPermission() {
   // 响应式状态（补充 Android 专属）
   const permissionState = reactive<PermissionState>({
     isIOS: false,
-    wxVersion: '',
     bluetoothScopeAuth: false,
-    locationScopeAuth: false,
     bluetoothSystemAuth: 'not determined',
     locationAppAuthorized: 'not determined', // APP 级定位权限
     bluetoothSystemSwitch: false, // 系统蓝牙开关
@@ -151,16 +138,12 @@ export function useBluetoothPermission() {
 
   const errorMsg = ref<string>('')
 
-  // 1. 同步初始化系统/微信信息
+  // 1. 同步初始化系统信息
   const initEnvInfo = () => {
     try {
-      const deviceInfo = wx.getDeviceInfo()
-      console.log('initEnvInfo [getDeviceInfo] :>> ', deviceInfo)
-      permissionState.isIOS = deviceInfo.system?.toLowerCase().includes('ios') || deviceInfo.platform === 'ios'
-
-      const appBaseInfo = wx.getAppBaseInfo()
-      console.log('initEnvInfo [getAppBaseInfo] :>> ', appBaseInfo)
-      permissionState.wxVersion = appBaseInfo.SDKVersion || ''
+      const deviceInfo = uni.getSystemInfoSync()
+      permissionState.isIOS = deviceInfo.platform.toLowerCase().includes('ios')
+      console.log('系统信息 [deviceInfo] :>> ', permissionState.isIOS, deviceInfo)
     }
     catch (err) {
       const error = new Error(`初始化系统信息失败：${(err as Error).message}`)
@@ -178,7 +161,8 @@ export function useBluetoothPermission() {
       }
 
       try {
-        const systemSetting = wx.getSystemSetting()
+        const systemSetting = uni.getSystemSetting()
+        console.log('系统硬件开关检查 [getSystemSetting] :>> ', systemSetting)
         // 同步更新两个开关状态
         permissionState.bluetoothSystemSwitch = systemSetting.bluetoothEnabled || false
         permissionState.locationSystemSwitch = systemSetting.locationEnabled || false
@@ -209,13 +193,14 @@ export function useBluetoothPermission() {
 
   // ========== 合并后的核心方法：检查 APP 级权限（蓝牙+定位） ==========
   /**
-   * 检查/刷新微信 APP 级权限（蓝牙+定位）
+   * 检查/刷新 APP 级权限（蓝牙+定位）
    * @param needCheck 是否校验权限（true=未授权抛错，false=仅刷新状态不抛错）
    */
   const checkAppSwitches = (needCheck = true) => {
     try {
-      // 同步获取微信 APP 级授权设置
-      const appAuthorizeSetting = wx.getAppAuthorizeSetting()
+      // 同步获取 APP 级授权设置
+      const appAuthorizeSetting = uni.getAppAuthorizeSetting()
+      console.log('APP 级权限 [appAuthorizeSetting] :>> ', appAuthorizeSetting)
 
       // 1. 更新蓝牙系统级权限（全平台）
       permissionState.bluetoothSystemAuth = appAuthorizeSetting.bluetoothAuthorized
@@ -249,12 +234,12 @@ export function useBluetoothPermission() {
   // 3. 刷新小程序内权限（异步）
   const refreshScopePermission = () => {
     return new Promise<void>((resolve, reject) => {
-      wx.getSetting({
-        success: (res) => {
-          permissionState.bluetoothScopeAuth = !!res.authSetting['scope.bluetooth']
-          if (!permissionState.isIOS) {
-            permissionState.locationScopeAuth = !!res.authSetting['scope.userLocation']
-          }
+      uni.getSetting({
+        success: ({ authSetting }) => {
+          console.log('小程序内权限 [authSetting] :>> ', authSetting)
+
+          permissionState.bluetoothScopeAuth
+            = !!(authSetting['scope.bluetooth'] || (authSetting as any).bluetooth)
           resolve()
         },
         fail: (err) => {
@@ -295,10 +280,6 @@ export function useBluetoothPermission() {
       // 小程序蓝牙权限
       if (!permissionState.bluetoothScopeAuth) {
         await PermissionModal.bluetoothScopeModal(permissionState.isIOS)
-      }
-      // 小程序定位权限（Android）
-      if (!permissionState.isIOS && !permissionState.locationScopeAuth) {
-        await PermissionModal.locationScopeModal()
       }
 
       return true

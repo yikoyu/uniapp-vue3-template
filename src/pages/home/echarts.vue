@@ -9,8 +9,12 @@ defineOptions({
 
 definePage({
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    'navigationBarTitleText': '',
+    'navigationStyle': 'custom',
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES',
+    },
   },
 })
 

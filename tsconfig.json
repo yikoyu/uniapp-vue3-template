@@ -15,6 +15,7 @@
       "node",
       "@dcloudio/types",
       "miniprogram-api-typings",
+      "@mini-types/alipay",
       "@uni-helper/uni-types",
       "@uni-helper/vite-plugin-uni-pages",
       "@uni-ku/bundle-optimizer/client",

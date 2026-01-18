@@ -10,8 +10,12 @@ import { toast } from '@/utils/toast'
 
 definePage({
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    'navigationBarTitleText': '',
+    'navigationStyle': 'custom',
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES',
+    },
   },
 })
 
@@ -105,12 +109,22 @@ async function onLogin() {
       <view class="login-sms-form__input">
         <input v-model="form.code" type="number" :maxlength="6" placeholder="请输入验证码">
 
-        <button class="login-sms-form__input-btn" :disabled="isActive || disabledCode" @click="getSmsCodeVerifiy">
+        <button
+          class="login-sms-form__input-btn"
+          :class="{ 'is-disabled': isActive || disabledCode }"
+          @click="getSmsCodeVerifiy"
+        >
           {{ codeText }}
         </button>
       </view>
 
-      <button class="login-sms-form__btn" hover-class="active" :disabled="disabled" @click="onLogin">
+      <button
+        class="login-sms-form__btn"
+        :class="{ 'is-disabled': disabled }"
+        hover-class="active"
+        :disabled="disabled"
+        @click="onLogin"
+      >
         登录
       </button>
     </view>
@@ -149,6 +163,7 @@ async function onLogin() {
         padding: 25rpx 30rpx;
         line-height: $input-line-height;
         color: #333;
+        background-color: transparent;
       }
 
       &-btn {
@@ -162,7 +177,7 @@ async function onLogin() {
         text-align: right;
         background-color: rgb(255 255 255 / 0%);
 
-        &[disabled] {
+        &.is-disabled {
           color: #c6c6c6;
           background-color: rgb(255 255 255 / 0%);
         }
