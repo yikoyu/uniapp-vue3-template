@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { isMpAlipay } from '@uni-helper/uni-env'
 import { Enum } from 'enum-plus'
 
 import NavBar from '@/components/NavBar/index.vue'
@@ -18,7 +19,13 @@ definePage({
   },
 })
 
-const { reLaunchUrl, selected, getPhoneNumber } = useWechatLogin()
+const {
+  reLaunchUrl,
+  selected,
+  getPhoneNumber,
+  onHandleAuthError,
+  getAliAuthorize,
+} = useWechatLogin()
 
 const LinkEnum = Enum({
   /** 用户服务协议 */
@@ -58,15 +65,29 @@ function toURL(value: typeof LinkEnum.valueType) {
 
       <!-- <view class="login-content__title">{{ APP_NAME }}</view> -->
 
-      <button
-        v-if="selected"
-        class="login-content__btn is-wechat"
-        hover-class="active"
-        open-type="getPhoneNumber"
-        @getphonenumber="getPhoneNumber"
-      >
-        手机号快捷登录
-      </button>
+      <template v-if="selected">
+        <button
+          v-if="isMpAlipay"
+          class="login-content__btn is-wechat"
+          hover-class="active"
+          open-type="getAuthorize"
+          scope="phoneNumber"
+          @getAuthorize="getAliAuthorize"
+          @error="onHandleAuthError"
+        >
+          手机号快捷登录
+        </button>
+
+        <button
+          v-else
+          class="login-content__btn is-wechat"
+          hover-class="active"
+          open-type="getPhoneNumber"
+          @getphonenumber="getPhoneNumber"
+        >
+          手机号快捷登录
+        </button>
+      </template>
 
       <button
         v-if="!selected"

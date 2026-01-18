@@ -62,11 +62,17 @@ export const useAppStore = defineStore('app', {
 
         this.resetToken()
 
-        uni.login({
-          provider: 'weixin',
-          onlyAuthorize: true,
-        })
+        uni.getProvider({ service: 'oauth' })
+          .then(({ provider }) => {
+            console.log('wechatLogin [getProvider] :>> ', provider)
+            return uni.login({
+              provider: provider as any,
+              onlyAuthorize: true,
+              scopes: 'auth_base',
+            })
+          })
           .then(({ code }) => {
+            console.log('uni.login [code] :>> ', code)
             return Apis.general.wxAuthorizeLoginCodeUsingPOST({
               meta: { authRole: null },
               data: { loginCode: code, phoneCode },
