@@ -19,7 +19,7 @@
       "@uni-helper/uni-types",
       "@uni-helper/vite-plugin-uni-pages",
       "@uni-ku/bundle-optimizer/client",
-      "wot-design-uni/global",
+      "@wot-ui/ui/global",
       "uni-echarts/global"
     ],
     "noImplicitAny": false,

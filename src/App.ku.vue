@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { setNotifyDefaultOptions } from 'wot-design-uni'
+import { setNotifyDefaultOptions } from '@wot-ui/ui'
 import { useNavBarHeight } from '@/components/NavBar/useNavBarHeight'
 
 const { mainHeight } = useNavBarHeight()
@@ -15,6 +15,6 @@ onMounted(() => {
   <KuRootView />
 
   <WdToast />
-  <WdMessageBox />
+  <WdDialog />
   <WdNotify />
 </template>

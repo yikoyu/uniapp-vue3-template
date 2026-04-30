@@ -2,20 +2,20 @@ import path from 'node:path'
 import process from 'node:process'
 import Uni from '@uni-helper/plugin-uni'
 import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
-import { WotResolver } from '@uni-helper/vite-plugin-uni-components/resolvers'
 import UniHelperLayouts from '@uni-helper/vite-plugin-uni-layouts'
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
 import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
 import UniKuBundleOptimizer from '@uni-ku/bundle-optimizer'
 import UniKuRoot from '@uni-ku/root'
-
 import { visualizer } from 'rollup-plugin-visualizer'
+
 import { UniEcharts } from 'uni-echarts/vite'
-
 import UnoCSS from 'unocss/vite'
-import AutoImport from 'unplugin-auto-import/vite'
 
+import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
+
+import { WotResolver } from './vite-plugins/wot-ui-resolver'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
@@ -27,7 +27,7 @@ export default defineConfig(async ({ command, mode }) => {
   return {
     base: './',
     optimizeDeps: {
-      exclude: isBuild ? [] : ['wot-design-uni', 'uni-echarts'],
+      exclude: isBuild ? [] : ['@wot-ui/ui', 'uni-echarts'],
     },
     resolve: {
       alias: {
@@ -121,7 +121,9 @@ export default defineConfig(async ({ command, mode }) => {
         scss: {
           // 引入 mixin.scss 这样就可以在全局中使用 mixin.scss中预定义的变量了
           // 给导入的路径最后加上 ;
-          additionalData: '@import "@/styles/utils.scss";',
+          additionalData: '@use "@/styles/utils.scss" as *;',
+          api: 'modern-compiler',
+          silenceDeprecations: ['legacy-js-api'],
         },
       },
     },

@@ -3,6 +3,7 @@ shellEmulator: true
 trustPolicy: off
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - '@uni-helper/unocss-preset-uni'
   - core-js
   - esbuild

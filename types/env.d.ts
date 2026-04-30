@@ -14,6 +14,13 @@ declare module '*.svg'
 
 interface ViteEnv {
   /**
+   * @description 应用是否运行在开发环境 (永远与 import.meta.env.PROD相反)
+   * @type {string}
+   * @memberof ViteEnv
+   */
+  readonly DEV: boolean
+
+  /**
    * @description 微信小程序 appid
    * @type {string}
    * @memberof ViteEnv
@@ -56,7 +63,7 @@ interface ViteEnv {
   readonly VITE_ENABLE_MOCK: string
 }
 
-interface ImportMetaEnv extends ViteEnv {}
+interface ImportMetaEnv extends ViteEnv { }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv

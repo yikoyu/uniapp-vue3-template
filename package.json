@@ -66,6 +66,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-4080520251106001",
     "@uni-helper/uni-env": "^0.2.0",
     "@vueuse/core": "9.13.0",
+    "@wot-ui/ui": "^2.0.5",
     "alova": "^3.4.0",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.19",
@@ -77,7 +78,6 @@
     "qs": "^6.14.0",
     "uni-echarts": "^2.3.0",
     "vue": "3.4.21",
-    "wot-design-uni": "^1.13.0",
     "zod": "^4.1.13"
   },
   "devDependencies": {
@@ -113,7 +113,7 @@
     "lint-staged": "^16.2.7",
     "miniprogram-api-typings": "^4.1.2",
     "rollup-plugin-visualizer": "^6.0.5",
-    "sass": "1.78.0",
+    "sass": "^1.99.0",
     "simple-git-hooks": "^2.13.1",
     "stylelint": "^16.26.1",
     "typescript": "^5.9.3",

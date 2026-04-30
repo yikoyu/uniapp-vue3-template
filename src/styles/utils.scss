@@ -1,3 +1,5 @@
+@use '@/uni.scss' as *;
+
 @mixin arrow-icon($dir: 'right', $isAbsFix: false, $size: 20rpx, $color: #c9cdd4) {
   width: $size;
   height: $size;

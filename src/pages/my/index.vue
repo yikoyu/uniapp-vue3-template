@@ -43,7 +43,7 @@ function toLogin() {
   <div class="px-4 pt-8">
     <WdCellGroup custom-class="rounded-lg overflow-hidden" border>
       <WdCell title="退出登录" is-link @click="toLogin">
-        <template #icon>
+        <template #prefix>
           <div>
             <div class="i-carbon:logout h-[16px] w-[16px] pr-3 color-primary" />
           </div>

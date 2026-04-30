@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useMessage, useNotify, useToast } from 'wot-design-uni'
+import { useDialog, useNotify, useToast } from '@wot-ui/ui'
 import { useAppStore } from '@/stores/app'
 
 definePage({
@@ -17,7 +17,7 @@ definePage({
 
 const app = useAppStore()
 const toast = useToast()
-const message = useMessage()
+const dialog = useDialog()
 const { showNotify } = useNotify()
 
 const count = ref(0)
@@ -32,13 +32,12 @@ function onUseToast() {
   toast.show(`Hello World ${count.value}`)
 }
 
-async function onUseMessage() {
+async function onUseDialog() {
   try {
-    await message.confirm({
-      confirmButtonProps: { round: false },
-      cancelButtonProps: { round: false },
+    await dialog.confirm({
       msg: '提示文案',
       title: '标题',
+      theme: 'text',
     })
 
     console.log('点击了确定按钮')
@@ -124,41 +123,43 @@ onPullDownRefresh(() => reload())
   <NavBar title="首页" />
 
   <view>
-    <WdButton @click="setCountPlus">
-      count: {{ count }}
-    </WdButton>
+    <div class="flex flex-wrap gap-1">
+      <WdButton @click="setCountPlus">
+        count: {{ count }}
+      </WdButton>
 
-    <WdButton @click="onUseToast">
-      useToast
-    </WdButton>
+      <WdButton @click="onUseToast">
+        useToast
+      </WdButton>
 
-    <WdButton @click="onUseMessage">
-      useMessage
-    </WdButton>
+      <WdButton @click="onUseDialog">
+        useDialog
+      </WdButton>
 
-    <WdButton @click="onShowNotify">
-      showNotify
-    </WdButton>
+      <WdButton @click="onShowNotify">
+        showNotify
+      </WdButton>
 
-    <WdButton @click="setAppStore">
-      设置Pinia数据
-    </WdButton>
+      <WdButton @click="setAppStore">
+        设置Pinia数据
+      </WdButton>
 
-    <WdButton @click="resetAppStore">
-      删除Pinia数据
-    </WdButton>
+      <WdButton @click="resetAppStore">
+        删除Pinia数据
+      </WdButton>
 
-    <WdButton @click="getUserInfo">
-      获取用户信息
-    </WdButton>
+      <WdButton @click="getUserInfo">
+        获取用户信息
+      </WdButton>
 
-    <WdButton @click="toEcharts">
-      Echarts
-    </WdButton>
+      <WdButton @click="toEcharts">
+        Echarts
+      </WdButton>
 
-    <WdButton @click="toCheckPerm">
-      检查权限
-    </WdButton>
+      <WdButton @click="toCheckPerm">
+        检查权限
+      </WdButton>
+    </div>
 
     <div>
       <div v-for="item in mockList" :key="item.id" class="center py-8 even:bg-[#F9F9F9]">
