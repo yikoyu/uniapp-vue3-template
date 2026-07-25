@@ -1,4 +1,14 @@
 {
+  "json.schemas": [
+    {
+      "fileMatch": ["manifest.json"],
+      "url": "https://cdn.jsdelivr.net/npm/@uni-helper/manifest-json-schema/schema.json"
+    },
+    {
+      "fileMatch": ["pages.json"],
+      "url": "https://cdn.jsdelivr.net/npm/@uni-helper/pages-json-schema/schema.json"
+    }
+  ],
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
   "explorer.fileNesting.patterns": {
