@@ -3,7 +3,7 @@
 import type { ImageMode, ImageOnError, ImageOnLoad } from '@uni-helper/uni-types'
 
 import type { StyleValue } from 'vue'
-import { computed, defineProps } from 'vue'
+import { computed } from 'vue'
 
 /**
  * 引入分包本地图片（组件和图片在同一分包，可正常引用）

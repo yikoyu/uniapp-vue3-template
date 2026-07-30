@@ -127,7 +127,6 @@ function toURL(value: typeof LinkEnum.valueType) {
 
 <style lang="scss">
 /* radio 样式修改 */
-/* stylelint-disable-next-line selector-type-no-unknown */
 radio {
   @include custom-radio;
 }

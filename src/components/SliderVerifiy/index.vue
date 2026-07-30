@@ -112,7 +112,7 @@ function touchstart(event: Recordable) {
       x: data.futu_x,
       y: 0,
       type: 'down',
-      t: new Date().getTime() - captchaTrack.startSlidingTime.getTime(),
+      t: Date.now() - captchaTrack.startSlidingTime.getTime(),
     })
     data.futu_anxiaX = event.touches[0].clientX
   }
@@ -131,7 +131,7 @@ function touchmove(event: Recordable) {
       // x: parseInt(this.futu_x * (679 / uni.upx2px(600))),
       y: 0,
       type: 'move',
-      t: new Date().getTime() - captchaTrack.startSlidingTime.getTime(),
+      t: Date.now() - captchaTrack.startSlidingTime.getTime(),
     })
   }
 }
@@ -150,7 +150,7 @@ async function touchend(event: Recordable) {
         // x: parseInt(this.futu_x * (679 / uni.upx2px(600))),
         y: 0,
         type: 'up',
-        t: new Date().getTime() - captchaTrack.startSlidingTime.getTime(),
+        t: Date.now() - captchaTrack.startSlidingTime.getTime(),
       })
 
       try {

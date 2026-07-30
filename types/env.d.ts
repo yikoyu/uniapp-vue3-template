@@ -11,6 +11,7 @@ declare module '*.vue' {
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.svg'
+declare module 'virtual:uno.css'
 
 interface ViteEnv {
   /**

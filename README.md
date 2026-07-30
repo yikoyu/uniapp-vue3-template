@@ -3,22 +3,22 @@ Uni-App 快速启动模版 (Vue3)
 </h1>
 
 <a href="https://github.com/yikoyu/uniapp-vue3-template">
-  <img src="https://img.shields.io/github/stars/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=github">
+  <img src="https://img.shields.io/github/stars/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=github" alt="stars">
 </a>
 <a href="https://github.com/yikoyu/uniapp-vue3-template">
-  <img src="https://img.shields.io/github/forks/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=github">
+  <img src="https://img.shields.io/github/forks/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=github" alt="forks">
 </a>
 <a href="https://github.com/yikoyu/uniapp-vue3-template">
-  <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyikoyu%2Funiapp-vue3-template%2Fmain%2Fpackage.json&query=engines.node&label=node&style=for-the-badge&logo=node.js">
+  <img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fyikoyu%2Funiapp-vue3-template%2Fmain%2Fpackage.json&query=engines.node&label=node&style=for-the-badge&logo=node.js" alt="nodejs">
 </a>
 <a href="https://github.com/yikoyu/uniapp-vue3-template">
-  <img src="https://img.shields.io/github/package-json/packageManager/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=pnpm">
+  <img src="https://img.shields.io/github/package-json/packageManager/yikoyu/uniapp-vue3-template?style=for-the-badge&logo=pnpm" alt="pnpm">
 </a>
 <!-- <a href="https://github.com/yikoyu/uniapp-vue3-template">
   <img src="https://img.shields.io/github/package-json/v/yikoyu/uniapp-vue3-template?style=for-the-badge">
 </a> -->
 <a href="https://github.com/yikoyu/uniapp-vue3-template">
-  <img src="https://img.shields.io/github/license/yikoyu/uniapp-vue3-template?style=for-the-badge">
+  <img src="https://img.shields.io/github/license/yikoyu/uniapp-vue3-template?style=for-the-badge" alt="license">
 </a>
 
 [![code style](https://antfu.me/badge-code-style.svg)](https://github.com/antfu/eslint-config)
@@ -55,7 +55,7 @@ Uni-App 快速启动模版 (Vue3)
 
 ## 🛠️ 使用方法
 
-#### 1. 项目启动
+### 1. 项目启动
 
 推荐使用 `pnpm` 作为包管理工具。
 
@@ -73,7 +73,7 @@ pnpm h5:dev
 pnpm wx:dev
 ```
 
-#### 2. 项目发布（构建）
+### 2. 项目发布（构建）
 
 ```bash
 # 构建开发环境 (H5 / 小程序)
@@ -89,7 +89,7 @@ pnpm h5:build:prd
 pnpm wx:build:prd
 ```
 
-#### 3. 代码提交规范
+### 3. 代码提交规范
 
 本项目集成 `cz-git`，通过交互式命令行提交代码。
 
@@ -98,7 +98,7 @@ pnpm wx:build:prd
 pnpm commit
 ```
 
-#### 4. 更新 uni-app 版本
+### 4. 更新 uni-app 版本
 
 使用 UVM (uni-app version manager) 统一管理依赖版本。
 
@@ -107,7 +107,7 @@ pnpm commit
 pnpm uvm
 ```
 
-#### 5. 同步最新代码
+### 5. 同步最新代码
 
 1. 在自己的仓库里面新增开源仓库地址
 ```bash

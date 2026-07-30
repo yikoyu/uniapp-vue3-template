@@ -16,7 +16,6 @@ onHide(() => {
 </script>
 
 <style lang="scss">
-/* stylelint-disable-next-line selector-type-no-unknown */
 :root, page {
   --wot-color-theme: #165dff;
   --wot-button-large-radius: 8rpx;

@@ -150,7 +150,8 @@ export class AlovaTokenAuthHandler {
     // 业务过期
     if (
       (data as Recordable).status === 1011008
-      || (data as Recordable).status === 1011004) {
+      || (data as Recordable).status === 1011004
+    ) {
       return true
     }
 
