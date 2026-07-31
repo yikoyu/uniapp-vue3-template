@@ -6,6 +6,7 @@ onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@uni-helper/unocss-preset-uni'
   - core-js
+  - core-js-pure
   - esbuild
   - simple-git-hooks
   - vue-demi

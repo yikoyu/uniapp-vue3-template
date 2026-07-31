@@ -2,6 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import Uni from '@uni-helper/plugin-uni'
 import UniHelperComponents from '@uni-helper/vite-plugin-uni-components'
+import { WotV2Resolver } from '@uni-helper/vite-plugin-uni-components/resolvers'
 import UniHelperLayouts from '@uni-helper/vite-plugin-uni-layouts'
 import UniHelperManifest from '@uni-helper/vite-plugin-uni-manifest'
 import UniHelperPages from '@uni-helper/vite-plugin-uni-pages'
@@ -14,8 +15,6 @@ import UnoCSS from 'unocss/vite'
 
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
-
-import { WotResolver } from './vite-plugins/wot-ui-resolver'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
@@ -58,7 +57,7 @@ export default defineConfig(async ({ command, mode }) => {
       // https://github.com/uni-helper/vite-plugin-uni-components
       UniHelperComponents({
         dts: 'types/_components.d.ts',
-        resolvers: [WotResolver()],
+        resolvers: [WotV2Resolver()],
       }),
       // https://github.com/uni-ku/root
       UniKuRoot(),
