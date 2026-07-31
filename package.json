@@ -13,7 +13,7 @@
   "homepage": "https://github.com/yikoyu",
   "repository": "https://github.com/yikoyu/uniapp-vue3-template",
   "engines": {
-    "node": ">=20",
+    "node": ">=22",
     "pnpm": ">=10"
   },
   "scripts": {
@@ -46,8 +46,8 @@
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
-    "@alova/adapter-uniapp": "^2.0.14",
-    "@alova/mock": "^2.0.17",
+    "@alova/adapter-uniapp": "^2.0.17",
+    "@alova/mock": "^2.0.21",
     "@dcloudio/uni-app": "3.0.0-5010520260709002",
     "@dcloudio/uni-app-harmony": "3.0.0-5010520260709002",
     "@dcloudio/uni-app-plus": "3.0.0-5010520260709002",
@@ -67,18 +67,18 @@
     "@uni-helper/uni-env": "^0.3.1",
     "@vueuse/core": "9.13.0",
     "@wot-ui/ui": "^2.2.0",
-    "alova": "^3.4.0",
+    "alova": "^3.5.3",
     "crypto-js": "^4.2.0",
-    "dayjs": "^1.11.19",
-    "echarts": "^6.0.0",
-    "enum-plus": "^3.1.6",
-    "es-toolkit": "^1.42.0",
+    "dayjs": "^1.11.21",
+    "echarts": "^6.1.0",
+    "enum-plus": "^3.2.1",
+    "es-toolkit": "^1.50.0",
     "pinia": "2.3.1",
     "pinia-plugin-persistedstate": "4.2.0",
-    "qs": "^6.14.0",
-    "uni-echarts": "^2.3.0",
+    "qs": "^6.15.3",
+    "uni-echarts": "^2.5.2",
     "vue": "3.4.21",
-    "zod": "^4.1.13"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@alova/wormhole": "^1.5.2",
