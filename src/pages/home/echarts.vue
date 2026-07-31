@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import BarChart from '@sub-echarts/BarChart/index.vue'
+import BarChart from '@sub-vendor/BarChart/index.vue'
 
 defineOptions({
   componentPlaceholder: {

@@ -21,6 +21,31 @@ const dialog = useDialog()
 const { showNotify } = useNotify()
 
 const count = ref(0)
+const inputText = ref('')
+const resultText = ref('')
+const cryptoLoading = ref(false)
+
+async function onEncrypt() {
+  cryptoLoading.value = true
+  try {
+    const { CryptoAes } = await import('@sub-vendor/plugin/aes')
+    resultText.value = CryptoAes.encrypt(inputText.value)
+  }
+  finally {
+    cryptoLoading.value = false
+  }
+}
+
+async function onDecrypt() {
+  cryptoLoading.value = true
+  try {
+    const { CryptoAes } = await import('@sub-vendor/plugin/aes')
+    resultText.value = CryptoAes.decrypt(inputText.value)
+  }
+  finally {
+    cryptoLoading.value = false
+  }
+}
 
 function setCountPlus() {
   count.value = count.value + 1
@@ -159,6 +184,21 @@ onPullDownRefresh(() => reload())
       <WdButton @click="toCheckPerm">
         检查权限
       </WdButton>
+    </div>
+
+    <div>
+      <div class="flex items-center gap-2">
+        <input v-model="inputText" placeholder="请输入内容" class="flex-1 border border-gray-300 rounded px-2 py-1">
+        <WdButton :loading="cryptoLoading" @click="onEncrypt">
+          加密
+        </WdButton>
+        <WdButton :loading="cryptoLoading" @click="onDecrypt">
+          解密
+        </WdButton>
+      </div>
+      <div v-if="resultText" class="mt-2 break-all">
+        {{ resultText }}
+      </div>
     </div>
 
     <div>

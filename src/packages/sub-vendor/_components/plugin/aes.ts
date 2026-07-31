@@ -55,3 +55,5 @@ export class CryptoAes {
     return decryptor.toString(enc.Utf8)
   }
 }
+
+export default CryptoAes

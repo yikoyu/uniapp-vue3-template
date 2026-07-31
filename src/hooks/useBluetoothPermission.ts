@@ -258,12 +258,8 @@ export function useBluetoothPermission() {
       errorMsg.value = ''
 
       // ========== 第一步：检查 Android 系统级开关 ==========
-      await checkSystemHardwareSwitches()
-      if (!permissionState.bluetoothSystemSwitch) {
-        await PermissionModal.bluetoothSystemSwitchModal()
-      }
-      if (!permissionState.locationSystemSwitch) {
-        await PermissionModal.locationSystemSwitchModal()
+      if (!permissionState.isIOS) {
+        await checkSystemHardwareSwitches()
       }
 
       // ========== 第二步：检查 APP 级权限（合并后的方法，校验模式） ==========

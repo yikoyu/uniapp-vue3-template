@@ -7,7 +7,7 @@
       "@/*": ["./src/*"],
       "@packages/*": ["./src/packages/*"],
       "@sub-static/*": ["./src/packages/sub-static/_components/*"],
-      "@sub-echarts/*": ["./src/packages/sub-echarts/_components/*"]
+      "@sub-vendor/*": ["./src/packages/sub-vendor/_components/*"]
     },
     "resolveJsonModule": true,
     "types": [
