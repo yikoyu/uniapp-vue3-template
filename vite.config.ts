@@ -1,3 +1,4 @@
+import type { Plugin } from 'vite'
 import path from 'node:path'
 import process from 'node:process'
 import Uni from '@uni-helper/plugin-uni'
@@ -15,6 +16,48 @@ import UnoCSS from 'unocss/vite'
 
 import AutoImport from 'unplugin-auto-import/vite'
 import { defineConfig } from 'vite'
+
+export interface UnocssInjectOptions {
+  srcDir?: string
+  mainEntry?: string
+}
+
+function UnocssInject({ srcDir, mainEntry = 'main.ts' }: UnocssInjectOptions = {}): Plugin {
+  const sourceRoot = srcDir ?? path.join(process.cwd(), 'src')
+  const mainEntryFile = path.normalize(path.join(sourceRoot, mainEntry))
+
+  const CssFileReg = /\.css$/
+  const StyleExtMap = new Map(Object.entries({
+    'mp-weixin': '.wxss',
+    'mp-alipay': '.acss',
+  }))
+
+  return {
+    name: 'vite-uni-plugin-unocss-inject',
+    transform: {
+      order: 'post',
+      handler(code, id) {
+        // 关键：对当前id也normalize再对比，解决win/mac/linux分隔符差异
+        if (path.normalize(id) === mainEntryFile) {
+          return `\nimport "virtual:uno.css";\n${code}`
+        }
+      },
+    },
+    generateBundle: {
+      order: 'post',
+      handler(_, bundle) {
+        Object.keys(bundle).forEach((key) => {
+          const { UNI_PLATFORM } = process.env
+          const { type, fileName } = bundle[key]
+
+          if (type === 'asset' && CssFileReg.test(fileName)) {
+            bundle[key].fileName = fileName.replace(CssFileReg, StyleExtMap.get(UNI_PLATFORM!)!)
+          }
+        })
+      },
+    },
+  } as Plugin
+}
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
@@ -63,6 +106,8 @@ export default defineConfig(async ({ command, mode }) => {
       UniKuRoot(),
       // https://uni-echarts.xiaohe.ink
       UniEcharts(),
+      // 修复 [plugin:unocss:global:build:scan]  [unocss] "virtual:uno.css" is being imported multiple times in different files
+      UnocssInject(),
       // https://uni-helper.cn/plugin-uni
       Uni(),
       /**
