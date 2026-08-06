@@ -1,4 +1,4 @@
-import { AES, enc, mode, pad } from 'crypto-js'
+import { AES, ECB, Pkcs7, Utf8 } from 'crypto-es'
 
 /**
  * AES 加密解密工具类
@@ -25,11 +25,11 @@ export class CryptoAes {
    */
   static encrypt(message: string, pass: string = this.key): string {
     // 通过密钥获取 128 位的 key
-    const _key = enc.Utf8.parse(pass)
+    const _key = Utf8.parse(pass)
 
     const encryptor = AES.encrypt(message, _key, {
-      mode: mode.ECB,
-      padding: pad.Pkcs7,
+      mode: ECB,
+      padding: Pkcs7,
     })
 
     return encryptor.toString()
@@ -45,14 +45,14 @@ export class CryptoAes {
    */
   static decrypt(ciphertext: string, pass: string = this.key): string {
     // 通过密钥获取 128 位的 key
-    const _key = enc.Utf8.parse(pass)
+    const _key = Utf8.parse(pass)
 
     const decryptor = AES.decrypt(ciphertext, _key, {
-      mode: mode.ECB,
-      padding: pad.Pkcs7,
+      mode: ECB,
+      padding: Pkcs7,
     })
 
-    return decryptor.toString(enc.Utf8)
+    return decryptor.toString(Utf8)
   }
 }
 

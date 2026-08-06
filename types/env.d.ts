@@ -62,6 +62,13 @@ interface ViteEnv {
    * @memberof ViteEnv
    */
   readonly VITE_ENABLE_MOCK: string
+
+  /**
+   * @description 是否启用 eruda 调试面板
+   * @type {string}
+   * @memberof ViteEnv
+   */
+  readonly VITE_ENABLE_H5_ERUDA: string
 }
 
 interface ImportMetaEnv extends ViteEnv { }

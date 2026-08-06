@@ -1,6 +1,6 @@
 import type { App } from 'vue'
-import { createVConsole } from './vconsole'
+import { createEruda } from './eruda'
 
 export function createPlugins(app: App) {
-  createVConsole(app)
+  createEruda(app)
 }
