@@ -1,5 +1,7 @@
 import type { Method } from 'alova'
+import type { JsonBody } from './config'
 import { useAppStore } from '@/stores/app'
+import { ApiResponseConfig } from './config'
 
 // Custom error class for API errors
 export class ApiError extends Error {
@@ -12,13 +14,6 @@ export class ApiError extends Error {
     this.status = status
     this.data = data
   }
-}
-
-// Define a type for the expected API response structure
-interface ApiResponse {
-  status: number
-  msg?: string
-  data?: any
 }
 
 export class AlovaHandler {
@@ -67,9 +62,10 @@ export class AlovaHandler {
 
     // Extract status code and data from UniApp response
     const { statusCode, data } = response as UniNamespace.RequestSuccessCallbackResult
+    const body = data as JsonBody
 
     // 处理401/403错误（如果不是在handleAlovaResponse中处理的）
-    if (statusCode === 401 || statusCode === 403) {
+    if (ApiResponseConfig.isAuthStatus(statusCode)) {
     // 如果是未授权错误，清除用户信息并跳转到登录页
       uni.showToast({ title: '登录已过期，请重新登录！', duration: 500, icon: 'none' })
       const timer = setTimeout(() => {
@@ -80,21 +76,21 @@ export class AlovaHandler {
       throw new ApiError('登录已过期，请重新登录！', statusCode, data)
     }
 
-    const json = data as ApiResponse
-
     // Handle HTTP error status codes
-    if (statusCode >= 400) {
-      uni.showToast({ title: json.msg || '发生意外错误', icon: 'none' })
+    if (statusCode >= ApiResponseConfig.httpErrorThreshold) {
+      uni.showToast({ title: ApiResponseConfig.messageOf(body) || '发生意外错误', icon: 'none' })
       throw new ApiError(`Request failed with status: ${statusCode}`, statusCode, data)
     }
 
     // 业务代码错误
-    if (json.status !== 200) {
-      uni.showToast({ title: json.msg || '发生意外错误', icon: 'none' })
-      throw new ApiError(json.msg || '发生意外错误', statusCode, data)
+    if (!ApiResponseConfig.isSuccess(body, method.config.meta)) {
+      const message = ApiResponseConfig.messageOf(body) || '发生意外错误'
+      uni.showToast({ title: message, icon: 'none' })
+      throw new ApiError(message, statusCode, data)
     }
 
-    return json
+    // 原样返回后端响应体，保留原始字段与 TS 类型
+    return body
     // return response
   }
 
@@ -106,7 +102,7 @@ export class AlovaHandler {
     console.error('[Alova Error]', error, method)
 
     // 处理401/403错误（如果不是在handleAlovaResponse中处理的）
-    if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+    if (error instanceof ApiError && ApiResponseConfig.isAuthStatus(error.status)) {
       // 如果是未授权错误，清除用户信息并跳转到登录页
       uni.showToast({ title: '登录已过期，请重新登录！', duration: 500, icon: 'none' })
       const timer = setTimeout(() => {
@@ -146,12 +142,10 @@ export class AlovaTokenAuthHandler {
   ) {
     // Extract status code and data from UniApp response
     const { statusCode, data } = response as UniNamespace.RequestSuccessCallbackResult
+    const body = data as JsonBody
 
     // 业务过期
-    if (
-      (data as Recordable).status === 1011008
-      || (data as Recordable).status === 1011004
-    ) {
+    if (ApiResponseConfig.isTokenExpired(body)) {
       return true
     }
 
