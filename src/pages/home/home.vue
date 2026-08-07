@@ -97,7 +97,7 @@ function resetAppStore() {
 }
 
 function toEcharts() {
-  useRouter().navigate('/pages/home/echarts', {
+  useRouter().navigate('/pages/demo/echarts', {
     a: 1,
     b: '2',
     c: true,
@@ -117,7 +117,7 @@ async function getUserInfo() {
 }
 
 function toCheckPerm() {
-  useRouter().navigate('/pages/home/check-perm')
+  useRouter().navigate('/pages/demo/check-perm')
 }
 
 const { loading, data: mockList, total, isLastPage, page, reload } = usePagination(

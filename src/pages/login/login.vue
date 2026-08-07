@@ -4,7 +4,7 @@ import { Enum } from 'enum-plus'
 
 import NavBar from '@/components/NavBar/index.vue'
 import { toast } from '@/utils'
-import { useWechatLogin } from './_hooks/useWechatLogin'
+import { usePhoneLogin } from './_hooks/usePhoneLogin'
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME
 
@@ -25,7 +25,7 @@ const {
   getPhoneNumber,
   onHandleAuthError,
   getAliAuthorize,
-} = useWechatLogin()
+} = usePhoneLogin()
 
 const LinkEnum = Enum({
   /** 用户服务协议 */

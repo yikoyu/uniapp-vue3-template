@@ -20,23 +20,6 @@
       }
     },
     {
-      "path": "pages/home/check-perm",
-      "style": {
-        "navigationBarTitleText": "蓝牙权限检查"
-      }
-    },
-    {
-      "path": "pages/home/echarts",
-      "style": {
-        "navigationBarTitleText": "",
-        "navigationStyle": "custom",
-        "mp-alipay": {
-          "transparentTitle": "always",
-          "titlePenetrate": "YES"
-        }
-      }
-    },
-    {
       "path": "pages/home/home",
       "layout": "tabbar",
       "style": {
@@ -75,6 +58,23 @@
       "path": "pages/webview/webview",
       "style": {
         "navigationBarTitleText": ""
+      }
+    },
+    {
+      "path": "pages/demo/check-perm",
+      "style": {
+        "navigationBarTitleText": "蓝牙权限检查"
+      }
+    },
+    {
+      "path": "pages/demo/echarts",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "mp-alipay": {
+          "transparentTitle": "always",
+          "titlePenetrate": "YES"
+        }
       }
     }
   ],

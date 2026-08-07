@@ -1,6 +1,6 @@
 import { isMpAlipay } from '@uni-helper/uni-env'
 import { reactive, ref } from 'vue'
-import { useAuthorize } from './useAuthorize'
+import { useAuthorize } from '../_hooks/useAuthorize'
 
 /**
  * 权限引导弹框静态类（补充 Android 专属引导）

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useBluetoothPermission } from '@/pages/demo/_hooks/useBluetoothPermission'
+
 definePage({
   style: {
     navigationBarTitleText: '蓝牙权限检查',

@@ -9,7 +9,7 @@ interface IState {
   accessTokenExpire: number
   refreshToken: string
   refreshTokenExpire: number
-  isLastLoginWechat: boolean
+  isLastOauthLogin: boolean
   user: Recordable
 }
 
@@ -22,7 +22,7 @@ export const useAppStore = defineStore('app', {
       'accessTokenExpire',
       'refreshToken',
       'refreshTokenExpire',
-      'isLastLoginWechat',
+      'isLastOauthLogin',
     ],
   },
   state: (): IState => ({
@@ -31,7 +31,7 @@ export const useAppStore = defineStore('app', {
     accessTokenExpire: -1,
     refreshToken: '',
     refreshTokenExpire: -1,
-    isLastLoginWechat: false,
+    isLastOauthLogin: false,
     user: {},
   }),
 
@@ -56,7 +56,7 @@ export const useAppStore = defineStore('app', {
       })
     },
 
-    wechatLogin(phoneCode: string) {
+    phoneLogin(phoneCode: string) {
       return new Promise<string | void>((resolve, reject) => {
         toast.loading('登录中...')
 
@@ -64,7 +64,7 @@ export const useAppStore = defineStore('app', {
 
         uni.getProvider({ service: 'oauth' })
           .then(({ provider }) => {
-            console.log('wechatLogin [getProvider] :>> ', provider)
+            console.log('phoneLogin [getProvider] :>> ', provider)
             return uni.login({
               provider: provider as any,
               onlyAuthorize: true,
@@ -81,7 +81,7 @@ export const useAppStore = defineStore('app', {
           .then((res) => {
             // 登录成功
             this.setToken(res.data as Recordable)
-            this.isLastLoginWechat = true
+            this.isLastOauthLogin = true
             toast.hideLoading()
             toast.success('登录成功')
             resolve(this.accessToken)
@@ -101,16 +101,19 @@ export const useAppStore = defineStore('app', {
           return
         }
 
-        if (!this.isLastLoginWechat) {
+        if (!this.isLastOauthLogin) {
           // eslint-disable-next-line prefer-promise-reject-errors
-          reject({ statusCode: -1, msg: '最后一次登录不是微信，请使用微信登录' })
+          reject({ statusCode: -1, msg: '最近一次不是授权登录，无法自动登录，请重新登录' })
           return
         }
 
-        uni.login({
-          provider: 'weixin',
-          onlyAuthorize: true,
-        })
+        uni.getProvider({ service: 'oauth' })
+          .then(({ provider }) => {
+            return uni.login({
+              provider: provider as any,
+              onlyAuthorize: true,
+            })
+          })
           .then(({ code }) => {
             return Apis.general.doWxLoginUsingPOST({
               meta: { authRole: null },
@@ -120,7 +123,7 @@ export const useAppStore = defineStore('app', {
           .then((res) => {
             // 登录成功
             this.setToken(res.data as Recordable)
-            this.isLastLoginWechat = true
+            this.isLastOauthLogin = true
             toast.hideLoading()
             toast.success('登录成功')
             resolve(this.accessToken)
@@ -161,7 +164,7 @@ export const useAppStore = defineStore('app', {
           .then((res) => {
             // 登录成功
             this.setToken(res.data as Recordable)
-            this.isLastLoginWechat = false
+            this.isLastOauthLogin = false
             toast.hideLoading()
             toast.success('登录成功')
             resolve(this.accessToken)
@@ -200,14 +203,14 @@ export const useAppStore = defineStore('app', {
         })
           .then(() => {
             this.resetToken()
-            this.isLastLoginWechat = false
+            this.isLastOauthLogin = false
             useRouter().reLaunch('/pages/login/login')
             toast.hideLoading()
             resolve()
           })
           .catch((_err) => {
             this.resetToken()
-            this.isLastLoginWechat = false
+            this.isLastOauthLogin = false
             useRouter().reLaunch('/pages/login/login')
             toast.hideLoading()
             resolve()
