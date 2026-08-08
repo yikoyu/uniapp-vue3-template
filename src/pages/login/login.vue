@@ -105,7 +105,7 @@ function toURL(value: typeof LinkEnum.valueType) {
 
     <!-- 勾选协议 -->
     <view class="login__privacy-agreement">
-      <label class="login__privacy-agreement--radio" @click="selected = !selected">
+      <view class="login__privacy-agreement--radio" @click="selected = !selected">
         <radio :checked="selected" />
 
         <view>
@@ -117,7 +117,7 @@ function toURL(value: typeof LinkEnum.valueType) {
             《{{ LinkEnum.label(LinkEnum.PRIVACY) }}》
           </view>
         </view>
-      </label>
+      </view>
     </view>
 
     <!-- 背景 -->
