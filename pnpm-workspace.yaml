@@ -1,12 +1,14 @@
 catalogMode: manual
 shellEmulator: true
 trustPolicy: off
+strictPeerDependencies: false
+shamefullyHoist: true
 
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - '@uni-helper/unocss-preset-uni'
-  - core-js
-  - core-js-pure
-  - esbuild
-  - simple-git-hooks
-  - vue-demi
+allowBuilds:
+  '@parcel/watcher': true
+  '@uni-helper/unocss-preset-uni': true
+  core-js: true
+  core-js-pure: true
+  esbuild: true
+  simple-git-hooks: true
+  vue-demi: true

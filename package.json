@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@10.25.0",
+  "packageManager": "pnpm@11.22.0",
   "description": "uniapp vue3开发模版",
   "author": {
     "name": "yikoyu",
