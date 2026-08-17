@@ -23,7 +23,7 @@ function onChange({ value }) {
   if (!url)
     return
 
-  useRouter().reLaunch(url)
+  useRouter().replaceAll(url)
 }
 </script>
 

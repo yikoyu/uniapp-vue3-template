@@ -68,6 +68,9 @@ importers:
       '@vueuse/core':
         specifier: 9.13.0
         version: 9.13.0(vue@3.4.21(typescript@6.0.3))
+      '@wot-ui/router':
+        specifier: ^1.1.2
+        version: 1.1.2(vue@3.4.21(typescript@6.0.3))
       '@wot-ui/ui':
         specifier: ^2.2.0
         version: 2.2.0(vue@3.4.21(typescript@6.0.3))
@@ -2873,6 +2876,11 @@ packages:
 
   '@vueuse/shared@9.13.0':
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
+
+  '@wot-ui/router@1.1.2':
+    resolution: {integrity: sha512-z0+XJgeMl4DRoKQBRwSsYeoDDkyuXSNQ+jpMyxZpisp5db73+ffsP9Ac5imjjlUKfb2t9XZzpMq2kuUIaq3V/w==}
+    peerDependencies:
+      vue: ~3.4.38
 
   '@wot-ui/ui@2.2.0':
     resolution: {integrity: sha512-/eC3sejQ7N1OCnLOHtG8K8nMXb16cf/7SwkLnDlpULlhbUCuW1fw3Qm4fvAbz0cNLSGlB0qJ/8axklww2C/BmQ==}
@@ -10576,6 +10584,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@wot-ui/router@1.1.2(vue@3.4.21(typescript@6.0.3))':
+    dependencies:
+      vue: 3.4.21(typescript@6.0.3)
 
   '@wot-ui/ui@2.2.0(vue@3.4.21(typescript@6.0.3))':
     dependencies:

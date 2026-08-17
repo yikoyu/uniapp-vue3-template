@@ -134,14 +134,14 @@ export const useAppStore = defineStore('app', {
                 || err.statusCode === 498 // 账号注销中
             if (isToLogin) {
               this.resetToken()
-              useRouter().reLaunch('/pages/login/login')
+              useRouter().replaceAll('/pages/login/login')
               return reject(new Error('快捷登录失败，请重试'))
             }
 
             // 登录失败处理
             if (err.data.status !== 200) {
               this.resetToken()
-              useRouter().reLaunch('/pages/login/login')
+              useRouter().replaceAll('/pages/login/login')
               return reject(new Error(err.data.msg ?? '快捷登录失败，请重试'))
             }
 
@@ -204,14 +204,14 @@ export const useAppStore = defineStore('app', {
           .then(() => {
             this.resetToken()
             this.isLastOauthLogin = false
-            useRouter().reLaunch('/pages/login/login')
+            useRouter().replaceAll('/pages/login/login')
             toast.hideLoading()
             resolve()
           })
           .catch((_err) => {
             this.resetToken()
             this.isLastOauthLogin = false
-            useRouter().reLaunch('/pages/login/login')
+            useRouter().replaceAll('/pages/login/login')
             toast.hideLoading()
             resolve()
           })

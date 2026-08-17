@@ -79,7 +79,7 @@ async function onLogin() {
     const token = await app.mLogin(form.phone, form.code)
     if (token && !unref(isBack)) {
       console.log('reLaunchUrl.value :>> ', reLaunchUrl.value)
-      useRouter().reLaunch(reLaunchUrl.value || '/pages/home/home')
+      useRouter().replaceAll(reLaunchUrl.value || '/pages/home/home')
     }
 
     if (token && unref(isBack))

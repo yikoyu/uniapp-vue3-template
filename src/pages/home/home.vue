@@ -97,17 +97,20 @@ function resetAppStore() {
 }
 
 function toEcharts() {
-  useRouter().navigate('/pages/demo/echarts', {
-    a: 1,
-    b: '2',
-    c: true,
-    d: { d1: 1, d2: 2 },
-    resData: JSON.stringify({
-      a: 1,
+  useRouter().push({
+    path: '/pages/demo/echarts',
+    params: {
+      a: '1',
       b: '2',
-      c: true,
-      d: { d1: 1, d2: 2 },
-    }),
+      c: 'true',
+      // d: { d1: 1, d2: 2 },
+      resData: JSON.stringify({
+        a: 1,
+        b: '2',
+        c: true,
+        d: { d1: 1, d2: 2 },
+      }),
+    },
   })
 }
 
@@ -117,7 +120,7 @@ async function getUserInfo() {
 }
 
 function toCheckPerm() {
-  useRouter().navigate('/pages/demo/check-perm')
+  useRouter().push('/pages/demo/check-perm')
 }
 
 const { loading, data: mockList, total, isLastPage, page, reload } = usePagination(

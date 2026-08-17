@@ -1,72 +1,25 @@
-import qs from 'qs'
+import { router } from '@/plugins/router'
 
 /**
- * 路由操作的封装
+ * 获取路由实例
  *
- * UNIAPP 官方文档 @see https://uniapp.dcloud.net.cn/api/router.html
+ * 为什么需要这个 hook：
+ * Vue 的 `useRouter()` 只能在 `setup()` 内部调用，无法在普通函数、Pinia action、alova 回调等场景使用。
+ * 该 hook 直接导出 `@wot-ui/router` 的 router 实例，使其可在任意位置调用。
+ *
+ * @example
+ * ```ts
+ * import { useRouter } from '@/hooks/useRouter'
+ *
+ * // 在 alova 请求拦截器中跳转登录页
+ * useRouter().replaceAll('/pages/login/login')
+ *
+ * // 在 Pinia store 中使用
+ * useRouter().push('/pages/home/home')
+ * ```
+ *
+ * @returns router 实例，支持 push / replace / replaceAll / back 等方法
  */
-export default function useRouter() {
-  function _url<T extends Recordable = Recordable>(url: NavigateToOptions['url'], query?: T) {
-    const hasQuery = Object.keys(query ?? {}).length > 0
-    return hasQuery ? `${url}?${qs.stringify(query, { encode: false })}` : url
-  }
-
-  /**
-   * 保留当前页面，跳转到应用内的某个页面
-   */
-  function navigate<T extends Recordable = Recordable>(
-    url: NavigateToOptions['url'],
-    query?: T,
-    options?: Omit<UniApp.NavigateToOptions, 'url'>,
-  ) {
-    uni.navigateTo({ url: _url(url, query), ...options })
-  }
-
-  /**
-   * 保留当前页面，跳转到应用内的某个页面
-   */
-  function redirect<T extends Recordable = Recordable>(
-    url: NavigateToOptions['url'],
-    query?: T,
-    options?: Omit<UniApp.RedirectToOptions, 'url'>,
-  ) {
-    uni.redirectTo({ url: _url(url, query), ...options })
-  }
-
-  /**
-   * 关闭所有页面，打开到应用内的某个页面
-   */
-  function reLaunch<T extends Recordable = Recordable>(
-    url: NavigateToOptions['url'],
-    query?: T,
-    options?: Omit<UniApp.ReLaunchOptions, 'url'>,
-  ) {
-    uni.reLaunch({ url: _url(url, query), ...options })
-  }
-
-  /**
-   * 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
-   */
-  function switchTab<T extends Recordable = Recordable>(
-    url: NavigateToOptions['url'],
-    query?: T,
-    options?: Omit<UniApp.SwitchTabOptions, 'url'>,
-  ) {
-    uni.switchTab({ url: _url(url, query), ...options })
-  }
-
-  /**
-   * 关闭当前页面，返回上一页面或多级页面
-   */
-  function back(delta?: number, options?: Omit<UniApp.NavigateBackOptions, 'delta'>) {
-    uni.navigateBack({ delta, ...options })
-  }
-
-  return {
-    navigate,
-    redirect,
-    reLaunch,
-    switchTab,
-    back,
-  }
+export function useRouter() {
+  return router
 }

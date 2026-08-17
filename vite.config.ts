@@ -86,6 +86,10 @@ export default defineConfig(async ({ command, mode }) => {
             from: 'alova/client',
             imports: ['usePagination', 'useRequest', 'useWatcher', 'useForm'],
           },
+          {
+            from: '@wot-ui/router',
+            imports: ['useRoute'],
+          },
           // api 只导出这两个
           {
             from: '@/api/_gen',

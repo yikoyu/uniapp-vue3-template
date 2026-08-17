@@ -66,6 +66,7 @@
     "@dcloudio/uni-quickapp-webview": "3.0.0-5010520260709002",
     "@uni-helper/uni-env": "^0.3.1",
     "@vueuse/core": "9.13.0",
+    "@wot-ui/router": "^1.1.2",
     "@wot-ui/ui": "^2.2.0",
     "alova": "^3.5.3",
     "crypto-es": "^3.1.3",

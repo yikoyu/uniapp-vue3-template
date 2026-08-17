@@ -40,8 +40,11 @@ function goToSmsLogin() {
     return
   }
 
-  useRouter().navigate('/pages/login/sms', {
-    redirect: reLaunchUrl.value || '',
+  useRouter().push({
+    path: '/pages/login/sms',
+    params: {
+      redirect: reLaunchUrl.value || '',
+    },
   })
 }
 

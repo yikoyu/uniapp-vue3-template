@@ -19,7 +19,7 @@ export function usePhoneLogin() {
       const token = await useAppStore().phoneLogin(code)
 
       if (token) {
-        useRouter().reLaunch(reLaunchUrl.value || '/pages/home/home')
+        useRouter().replaceAll(reLaunchUrl.value || '/pages/home/home')
       }
     }
     catch (error: any) {
