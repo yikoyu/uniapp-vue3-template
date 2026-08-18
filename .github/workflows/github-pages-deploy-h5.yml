@@ -1,0 +1,16 @@
+name: Github Pages deploy H5
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: yikoyu/workflows/.github/workflows/github-pages-deploy.yml@main
+    permissions:
+      contents: write
+    with:
+      target-folder: ${{ github.ref_name }}
+      folder: dist/build/h5
+      build-command: npm run h5:build:tst
