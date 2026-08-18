@@ -1,0 +1,62 @@
+name: Github deploy Weixin
+
+on:
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (例如: 1.0.0)'
+        required: true
+        type: string
+        default: ''
+      description:
+        description: 版本描述
+        required: false
+        type: string
+        default: 手动发布版本
+      branch:
+        description: 要使用的分支
+        required: false
+        type: string
+        default: main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JS
+        uses: yikoyu/workflows/setup-js@main
+
+      - name: Build
+        shell: bash
+        run: npm run wx:build:tst
+
+      - name: Write private key
+        shell: bash
+        env:
+          PRIVATE_KEY: ${{ secrets.MP_PRIVATE_KEY }}
+        run: |
+          if [[ -z $PRIVATE_KEY ]]; then
+            echo "##########"
+            echo ""
+            echo "Please set 'MP_PRIVATE_KEY' key in actions secrets"
+            echo ""
+            echo "##########"
+            exit 1
+          else
+            echo "$PRIVATE_KEY" > private.key
+          fi
+
+      - name: Upload to WeChat
+        run: |
+          npm i miniprogram-ci -g
+          miniprogram-ci \
+            upload \
+            --pp dist/build/mp-weixin \
+            --pkp private.key \
+            --appid ${{ secrets.MP_APPID }} \
+            --uv ${{ github.event.inputs.version || '0.0.1' }} \
+            --ud ${{ github.event.inputs.description || '手动发布版本' }} \
+            --enable-minify \
+            --enable-es6

@@ -37,6 +37,7 @@ export function usePhoneLogin() {
   }
 
   function getPhoneNumber(e: Recordable) {
+    console.log('getPhoneNumber[e]', e)
     if (!ensureAgreed()) {
       return
     }
