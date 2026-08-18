@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import type { SendSmsData } from './api'
-import dayjs from 'dayjs'
 
-import { isString } from 'es-toolkit'
-import { computed, reactive, watchEffect } from 'vue'
-import { IconReload } from '@/static'
+import dayjs from 'dayjs'
+import { computed, reactive, watch } from 'vue'
 import { sendSms, sendSmsCheck } from './api'
 
 interface Props {
@@ -17,6 +15,10 @@ interface Emits {
   (event: 'update:modelValue', show: boolean): void
 }
 
+interface TouchEvent {
+  touches: { clientX: number, clientY: number }[]
+}
+
 const props = withDefaults(defineProps<Props>(), {
   modelValue: false,
   phone: '',
@@ -24,7 +26,20 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emits = defineEmits<Emits>()
 
-const INIT_FUTU_X = 0
+const INITIAL_X = 0
+
+// 单一数据源：JS 常量 → CSS 变量 → SCSS var()
+const BG_WIDTH = 600
+const BG_HEIGHT = 366
+const JIGSAW_WIDTH = 112
+const THUMB_WIDTH = 94
+
+const sliderVars = computed(() => ({
+  '--slider-bg-width': `${BG_WIDTH}rpx`,
+  '--slider-bg-height': `${BG_HEIGHT}rpx`,
+  '--slider-jigsaw-width': `${JIGSAW_WIDTH}rpx`,
+  '--slider-thumb-width': `${THUMB_WIDTH}rpx`,
+}))
 
 const show = computed({
   get: () => props.modelValue,
@@ -32,187 +47,185 @@ const show = computed({
 })
 
 const data = reactive({
-  zhutuPic: '', // 主图
-  // 缺口图
-  futuPic: '',
+  bgImage: '', // 主图
+  futuImage: '', // 缺口图
   loaded: false,
-  futu_x: INIT_FUTU_X, // 默认的位置
-  futu_anxiaX: undefined, // 按下时，手指的位置
-  futu_doudongClass: false,
-  captchaStatus: '', // success | error
+  sliderX: INITIAL_X, // 默认的位置
+  startX: undefined as number | undefined, // 按下时，手指的位置
+  isTrembling: false,
+  status: '' as '' | 'success' | 'error',
   captchaId: '',
-  msgLoadMsg: '加载中...',
+  errorMsg: '加载中...',
 })
 
-const captchaTrack = reactive<Recordable>({
-  bgImageHeight: uni.upx2px(366),
-  bgImageWidth: uni.upx2px(600),
+const captchaTrack = reactive({
+  bgImageHeight: uni.upx2px(BG_HEIGHT),
+  bgImageWidth: uni.upx2px(BG_WIDTH),
   sliderImageHeight: -1,
   sliderImageWidth: -1,
-  startSlidingTime: '',
-  endSlidingTime: '',
-  trackList: [],
+  startSlidingTime: undefined as Date | undefined,
+  endSlidingTime: undefined as Date | undefined,
+  trackList: [] as SendSmsData['captchaTrack']['trackList'],
 })
 
-function resetCaptchaTrack() {
-  // 停止抖动
-  data.futu_doudongClass = false
-  // 回到默认的位置
-  data.futu_x = INIT_FUTU_X
-  // 清空轨迹
+/** 重置滑块状态和轨迹数据 */
+function resetState() {
+  data.isTrembling = false
+  data.sliderX = INITIAL_X
   captchaTrack.sliderImageHeight = -1
   captchaTrack.sliderImageWidth = -1
-  captchaTrack.startSlidingTime = ''
-  captchaTrack.endSlidingTime = ''
+  captchaTrack.startSlidingTime = undefined
+  captchaTrack.endSlidingTime = undefined
   captchaTrack.trackList = []
 }
 
-async function shuaxin() {
-  data.futu_x = INIT_FUTU_X
-  data.zhutuPic = ''
-  data.futuPic = ''
-  data.captchaStatus = ''
-  data.msgLoadMsg = '加载中...'
+/**
+ * 处理验证失败：显示提示、触发抖动动画、重置并刷新验证码
+ * @param message - 错误提示信息
+ */
+function handleVerifyFail(message?: string) {
+  if (message) {
+    uni.showToast({ title: message, icon: 'none' })
+  }
+  data.isTrembling = true
+  data.status = 'error'
+  setTimeout(() => {
+    resetState()
+    loadCaptcha()
+  }, 700)
+}
+
+/** 加载滑块验证码：请求背景图和缺口图数据 */
+async function loadCaptcha() {
+  data.sliderX = INITIAL_X
+  data.bgImage = ''
+  data.futuImage = ''
+  data.status = ''
+  data.errorMsg = '加载中...'
   data.loaded = false
 
   try {
     const _data = await sendSmsCheck()
 
-    if (_data.status !== 200) {
-      // 错误处理
-      setTimeout(() => {
-        if (isString(_data.msg)) {
-          data.msgLoadMsg = _data.msg
-          data.loaded = false
-        }
-      }, 300)
+    if (_data.status === 200) {
+      data.futuImage = _data.data?.captcha?.sliderImage || ''
+      data.bgImage = _data.data?.captcha?.backgroundImage || ''
+      data.captchaId = _data.data?.id || ''
+      data.loaded = true
+      return
     }
 
-    // 生成验证码成功
-    data.futuPic = _data.data?.captcha?.sliderImage || ''
-    data.zhutuPic = _data.data?.captcha?.backgroundImage || ''
-    data.captchaId = _data.data?.id || ''
-    data.loaded = true
+    setTimeout(() => {
+      if (typeof _data.msg === 'string') {
+        data.errorMsg = _data.msg
+      }
+    }, 300)
   }
   catch (err: any) {
     if (err.errMsg === 'request:fail timeout') {
-      data.msgLoadMsg = '请求超时请重试'
+      data.errorMsg = '请求超时请重试'
     }
-
     console.log('err :>> ', err)
     data.loaded = false
   }
 }
 
-function touchstart(event: Recordable) {
-  // 手指按下
-  if (data.loaded && data.futu_anxiaX === undefined && data.futu_x === INIT_FUTU_X) {
+/**
+ * 手指按下：记录起始位置和时间，写入轨迹
+ * @param event - 触摸事件对象
+ */
+function handleTouchStart(event: TouchEvent) {
+  if (data.loaded && data.startX === undefined && data.sliderX === INITIAL_X) {
     captchaTrack.startSlidingTime = new Date()
     captchaTrack.trackList.push({
-      x: data.futu_x,
+      x: data.sliderX,
       y: 0,
       type: 'down',
-      t: Date.now() - captchaTrack.startSlidingTime.getTime(),
+      t: Date.now() - (captchaTrack.startSlidingTime?.getTime() ?? 0),
     })
-    data.futu_anxiaX = event.touches[0].clientX
+    data.startX = event.touches[0].clientX
   }
 }
 
-function touchmove(event: Recordable) {
-  // 手指移动
-  if (data.loaded && data.futu_anxiaX !== undefined) {
-    const x = INIT_FUTU_X + (event.touches[0].clientX - data.futu_anxiaX)
+/**
+ * 手指移动：计算滑块位置（限制在边界内），写入轨迹
+ * @param event - 触摸事件对象
+ */
+function handleTouchMove(event: TouchEvent) {
+  if (data.loaded && data.startX !== undefined) {
+    const x = INITIAL_X + (event.touches[0].clientX - data.startX)
     console.log('x :>> ', x, event.touches[0].clientX)
-    const [min, max] = [0, uni.upx2px(600 - 79)] // 确保不会超出边界【600是父元素的宽度、79是自身元素的宽度】
-    data.futu_x = x < min ? min : x > max ? max : x
+    const [min, max] = [0, uni.upx2px(BG_WIDTH - THUMB_WIDTH)] // 确保不会超出边界【BG_WIDTH是父元素的宽度、THUMB_WIDTH是自身元素的宽度】
+    data.sliderX = x < min ? min : x > max ? max : x
 
     captchaTrack.trackList.push({
-      x: data.futu_x,
-      // x: parseInt(this.futu_x * (679 / uni.upx2px(600))),
+      x: data.sliderX,
       y: 0,
       type: 'move',
-      t: Date.now() - captchaTrack.startSlidingTime.getTime(),
+      t: Date.now() - (captchaTrack.startSlidingTime?.getTime() ?? 0),
     })
   }
 }
 
-async function touchend(event: Recordable) {
-  // 手指离开
-  if (data.loaded && data.futu_anxiaX !== undefined) {
-    data.futu_anxiaX = undefined
-    if (data.zhutuPic === '') {
-      data.futu_x = INIT_FUTU_X
+/**
+ * 手指离开：提交验证请求，成功则关闭弹窗，失败则触发抖动并刷新
+ */
+async function handleTouchEnd() {
+  if (!data.loaded || data.startX === undefined)
+    return
+
+  data.startX = undefined
+
+  if (data.bgImage === '') {
+    data.sliderX = INITIAL_X
+    return
+  }
+
+  captchaTrack.endSlidingTime = new Date()
+  captchaTrack.trackList.push({
+    x: data.sliderX,
+    y: 0,
+    type: 'up',
+    t: Date.now() - (captchaTrack.startSlidingTime?.getTime() ?? 0),
+  })
+
+  try {
+    const _data = await sendSms({
+      captchaTrack: {
+        ...captchaTrack,
+        endSlidingTime: dayjs(captchaTrack.endSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
+        startSlidingTime: dayjs(captchaTrack.startSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
+      },
+      id: data.captchaId,
+      form: { phone: props.phone },
+    })
+
+    if (_data.status === 200) {
+      data.status = 'success'
+      setTimeout(() => {
+        show.value = false
+        emits('success')
+      }, 1500)
+      return
     }
-    else {
-      captchaTrack.endSlidingTime = new Date()
-      captchaTrack.trackList.push({
-        x: data.futu_x,
-        // x: parseInt(this.futu_x * (679 / uni.upx2px(600))),
-        y: 0,
-        type: 'up',
-        t: Date.now() - captchaTrack.startSlidingTime.getTime(),
-      })
 
-      try {
-        const _data = await sendSms({
-          captchaTrack: {
-            ...captchaTrack,
-            endSlidingTime: dayjs(captchaTrack.endSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
-            startSlidingTime: dayjs(captchaTrack.startSlidingTime).format('YYYY-MM-DD HH:mm:ss'),
-          } as SendSmsData['captchaTrack'],
-          id: data.captchaId,
-          form: {
-            phone: props.phone,
-          },
-        })
-
-        if (_data.status === 200) {
-          data.captchaStatus = 'success'
-          setTimeout(() => {
-            show.value = false
-            emits('success')
-          }, 1.5 * 1000)
-
-          return
-        }
-
-        _data.msg && uni.showToast({ title: _data.msg, icon: 'none' })
-        // 启动抖动动画
-        data.futu_doudongClass = true // 执行抖动的css动画
-        data.captchaStatus = 'error'
-        // 等待抖动结束
-        setTimeout(() => {
-          resetCaptchaTrack()
-          // 重载
-          shuaxin()
-        }, 700)
-      }
-      catch (error) {
-        uni.showToast({ title: '发送验证码失败请重试', icon: 'none' })
-        // 启动抖动动画
-        data.futu_doudongClass = true // 执行抖动的css动画
-        data.captchaStatus = 'error'
-        // 等待抖动结束
-        setTimeout(() => {
-          resetCaptchaTrack()
-          // 重载
-          shuaxin()
-        }, 700)
-      }
-    }
+    handleVerifyFail(_data.msg || undefined)
+  }
+  catch {
+    handleVerifyFail('发送验证码失败请重试')
   }
 }
 
-watchEffect(() => {
-  if (props.modelValue) {
-    shuaxin()
+watch(() => props.modelValue, (val) => {
+  if (val) {
+    loadCaptcha()
   }
 })
 </script>
 
 <template>
   <view>
-    <view v-if="show" class="slider-verifiy" @mousemove="touchmove" @mouseup="touchend">
+    <view v-if="show" class="slider-verifiy" :style="sliderVars">
       <view class="slider-verifiy__body">
         <view class="slider-verifiy__header">
           <view class="slider-verifiy__header-title">
@@ -223,18 +236,18 @@ watchEffect(() => {
         </view>
 
         <view class="slider-verifiy__movable">
-          <view v-if="data.zhutuPic === ''" class="slider-verifiy__movable-tip">
-            {{ data.msgLoadMsg }}
+          <view v-if="data.bgImage === ''" class="slider-verifiy__movable-tip">
+            {{ data.errorMsg }}
           </view>
 
-          <image v-else class="slider-verifiy__movable-bg" :src="data.zhutuPic" mode="widthFix" />
+          <image v-else class="slider-verifiy__movable-bg" :src="data.bgImage" mode="widthFix" />
 
           <view
             class="slider-verifiy__movable-jigsaw"
-            :class="[{ tremble: data.futu_doudongClass }]"
+            :class="[{ tremble: data.isTrembling }]"
             :style="{
-              backgroundImage: `url(${data.futuPic})`,
-              left: `${data.futu_x}px`,
+              backgroundImage: `url(${data.futuImage})`,
+              left: `${data.sliderX}px`,
             }"
           />
         </view>
@@ -242,24 +255,23 @@ watchEffect(() => {
         <view class="slider-verifiy__slide">
           <view
             class="slider-verifiy__slide-filling"
-            :class="data.captchaStatus"
-            :style="{ width: `${data.futu_x}px` }"
+            :class="data.status"
+            :style="{ width: `${data.sliderX}px` }"
           />
 
           <view
             class="slider-verifiy__slide-thumb"
-            :class="data.captchaStatus"
-            :style="{ left: `${data.futu_x}px` }"
-            @touchstart="touchstart"
-            @touchmove="touchmove"
-            @touchend="touchend"
-            @mousedown="touchstart"
+            :class="data.status"
+            :style="{ left: `${data.sliderX}px` }"
+            @touchstart="handleTouchStart"
+            @touchmove="handleTouchMove"
+            @touchend="handleTouchEnd"
           />
         </view>
 
         <view class="slider-verifiy__footer">
-          <view class="slider-verifiy__footer-refresh" @click="shuaxin">
-            <image class="slider-verifiy__footer-refresh__icon" :src="IconReload" />
+          <view class="slider-verifiy__footer-refresh" @click="loadCaptcha">
+            <view class="slider-verifiy__footer-refresh__icon" />
             刷新
           </view>
         </view>
@@ -284,7 +296,7 @@ $prefix: slider-verifiy;
   background: rgb(0 0 0 / 30%);
 
   &__body {
-    width: 600rpx;
+    width: var(--slider-bg-width);
     padding: 30rpx;
     background: #fff;
     border-radius: 16rpx;
@@ -320,22 +332,22 @@ $prefix: slider-verifiy;
         justify-content: center;
         width: 100%;
         font-size: 30rpx;
-        line-height: 366rpx;
+        line-height: var(--slider-bg-height);
         color: #999;
         background: #f8f8f8;
       }
 
       &-bg {
         display: block;
-        width: 600rpx;
-        height: 366rpx;
+        width: var(--slider-bg-width);
+        height: var(--slider-bg-height);
       }
 
       &-jigsaw {
         position: absolute;
         top: 0;
         left: 0;
-        width: 112rpx;
+        width: var(--slider-jigsaw-width);
         height: 100%;
         background-repeat: no-repeat;
         background-size: 100%;
@@ -402,7 +414,7 @@ $prefix: slider-verifiy;
         top: 0;
         left: 0;
         box-sizing: border-box;
-        width: 94rpx;
+        width: var(--slider-thumb-width);
         height: 100%;
         background-color: #fff;
         border: 4rpx solid #f2f3f5;
@@ -435,6 +447,9 @@ $prefix: slider-verifiy;
           width: 30rpx;
           height: 30rpx;
           margin-right: 12rpx;
+          background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjYiIGhlaWdodD0iMjYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTIzLjA4MyA1LjMxNC0xLjQzMiAxLjEyYTEwLjYzOSAxMC42MzkgMCAwIDAtOC40LTQuMDk4QTEwLjY1NiAxMC42NTYgMCAwIDAgMi41OSAxMi45ODdjLS4wMDggNS44OTYgNC43NjggMTAuNjc3IDEwLjY2MSAxMC42NzcgNC42MDQgMCA4LjUyNy0yLjkyIDEwLjAyLTcuMDFhLjIwNC4yMDQgMCAwIDAtLjEyNS0uMjYybC0xLjQ0LS40OTVhLjIwMy4yMDMgMCAwIDAtLjI1Ni4xMjIgOC42ODggOC42ODggMCAwIDEtMi4wMjEgMy4xNTYgOC42NzcgOC42NzcgMCAwIDEtNi4xNzIgMi41NiA4LjY2OCA4LjY2OCAwIDAgMS0zLjM5OC0uNjg2IDguNjcgOC42NyAwIDAgMS0yLjc3NS0xLjg3NCA4LjY4OCA4LjY4OCAwIDAgMS0xLjg3MS0yLjc3OCA4LjY5IDguNjkgMCAwIDEtLjY4Ni0zLjRjMC0xLjE4LjIzMS0yLjMyMy42ODYtMy40QTguNjg4IDguNjg4IDAgMCAxIDcuMDg0IDYuODJhOC42NzcgOC42NzcgMCAwIDEgNi4xNzItMi41NmMxLjE4MSAwIDIuMzI0LjIzMiAzLjM5OC42ODZhOC42NyA4LjY3IDAgMCAxIDIuNzc1IDEuODc0Yy4yNTEuMjUxLjQ4Ny41MTguNzA2Ljc5N2wtMS41MjkgMS4xOTRhLjIwMy4yMDMgMCAwIDAgLjA3Ni4zNThsNC40NTkgMS4wOTFhLjIwNC4yMDQgMCAwIDAgLjI1MS0uMTk1bC4wMi00LjU5M2EuMjA1LjIwNSAwIDAgMC0uMzMtLjE1OHoiIGZpbGw9IiM2NjYiIGZpbGwtcnVsZT0ibm9uemVybyIvPjwvc3ZnPg==");
+          background-repeat: no-repeat;
+          background-size: contain;
         }
       }
     }

@@ -18,9 +18,6 @@ onHide(() => {
 <style lang="scss">
 :root, page {
   --wot-color-theme: #165dff;
-  --wot-button-large-radius: 8rpx;
-  --wot-button-plain-bg-color: rgba(#fff, 0%);
-  --wot-button-success-bg-color: #00b42a;
 
   height: 100%;
 
