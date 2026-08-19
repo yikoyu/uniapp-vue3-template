@@ -104,7 +104,7 @@ function resetAppStore() {
 
 function toEcharts() {
   useRouter().push({
-    path: '/pages/demo/echarts',
+    path: '/pagesA/demo/echarts',
     params: {
       a: '1',
       b: '2',
@@ -126,7 +126,7 @@ async function getUserInfo() {
 }
 
 function toCheckPerm() {
-  useRouter().push('/pages/demo/check-perm')
+  useRouter().push('/pagesA/demo/check-perm')
 }
 
 const { loading, data: mockList, total, isLastPage, page, reload } = usePagination(

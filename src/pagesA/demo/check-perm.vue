@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBluetoothPermission } from '@/pages/demo/_hooks/useBluetoothPermission'
+import { useBluetoothPermission } from './_hooks/useBluetoothPermission'
 
 definePage({
   style: {

@@ -48,6 +48,7 @@ export default defineConfig(async ({ command, mode }) => {
           'src/packages/sub-static',
           'src/packages/sub-vendor',
           'src/packages/sub-comp',
+          'src/pagesA',
         ],
         dts: 'types/_uni-pages.d.ts',
         exclude: [
