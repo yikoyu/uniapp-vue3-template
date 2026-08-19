@@ -36,6 +36,7 @@ export default defineConfig(async ({ command, mode }) => {
         // 核心优化：直接映射到高频深层目录，跳过sub-xxx中间层级
         '@sub-static': path.resolve(__dirname, 'src/packages/sub-static/_components'), // 直接对应 _components 目录
         '@sub-vendor': path.resolve(__dirname, 'src/packages/sub-vendor/_components'), // 直接对应 _components 目录
+        '@sub-comp': path.resolve(__dirname, 'src/packages/sub-comp/_components'), // 直接对应 _components 目录
       },
     },
     plugins: [
@@ -46,6 +47,7 @@ export default defineConfig(async ({ command, mode }) => {
         subPackages: [
           'src/packages/sub-static',
           'src/packages/sub-vendor',
+          'src/packages/sub-comp',
         ],
         dts: 'types/_uni-pages.d.ts',
         exclude: [

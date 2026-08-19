@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import BarChart from '@sub-vendor/BarChart/index.vue'
+import BarChart from '@sub-comp/BarChart/index.vue'
+import PieChart from '@sub-comp/PieChart/index.vue'
 
 defineOptions({
   componentPlaceholder: {
     BarChart: 'view',
+    PieChart: 'view',
   },
 })
 
@@ -23,6 +25,11 @@ const resData = useQuery('resData')
 
 watchEffect(() => console.log('全部参数 :>> ', query.value))
 watchEffect(() => console.log('参数 [resData] :>> ', resData.value))
+
+onShow(async () => {
+  const { UUID } = await import('@sub-vendor/plugin/uuid')
+  console.log('[echarts] uuid :>> ', UUID.v4())
+})
 
 // 图表配置
 const option = ref({
@@ -68,12 +75,46 @@ const option = ref({
     },
   ],
 })
+
+// 饼图配置
+const pieOption = ref({
+  tooltip: {
+    trigger: 'item',
+    formatter: '{a} <br/>{b}: {c} ({d}%)',
+  },
+  legend: {
+    orient: 'horizontal',
+    bottom: 0,
+  },
+  series: [
+    {
+      name: '访问来源',
+      type: 'pie',
+      radius: '55%',
+      center: ['50%', '45%'],
+      data: [
+        { value: 1048, name: '搜索引擎' },
+        { value: 735, name: '直接访问' },
+        { value: 580, name: '邮件营销' },
+        { value: 484, name: '联盟广告' },
+        { value: 300, name: '视频广告' },
+      ],
+      itemStyle: {
+        borderRadius: 4,
+        borderColor: '#fff',
+        borderWidth: 2,
+      },
+    },
+  ],
+})
 </script>
 
 <template>
   <NavBar title="Echarts" />
 
   <BarChart custom-class="h-300px" :option="option" />
+
+  <PieChart custom-class="h-300px mt-4" :option="pieOption" />
 </template>
 
 <!-- <style lang="scss" scoped></style> -->

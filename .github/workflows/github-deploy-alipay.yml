@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号 (例如: 0.0.1)'
-        required: true
+        description: '版本号 (例如: 1.0.0)，如果不提供版本号，本次上传的版本会根据当前最新的已上传版本号添加一位 patch 版本号（最后一位数字）'
+        required: false
         type: string
         default: ''
       version-description:
