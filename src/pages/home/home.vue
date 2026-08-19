@@ -24,6 +24,7 @@ const count = ref(0)
 const inputText = ref('')
 const resultText = ref('')
 const cryptoLoading = ref(false)
+const uuidText = ref('')
 
 async function onEncrypt() {
   cryptoLoading.value = true
@@ -45,6 +46,11 @@ async function onDecrypt() {
   finally {
     cryptoLoading.value = false
   }
+}
+
+async function onGenUuid() {
+  const { UUID } = await import('@sub-vendor/plugin/uuid')
+  uuidText.value = UUID.v4()
 }
 
 function setCountPlus() {
@@ -238,6 +244,25 @@ onPullDownRefresh(() => reload())
         </view>
         <view v-if="resultText" class="crypto-result">
           {{ resultText }}
+        </view>
+      </view>
+    </view>
+
+    <!-- UUID 生成区域 -->
+    <view class="section">
+      <view class="section__title">
+        UUID 生成 <text class="section__subtitle">
+          （含分包使用演示）
+        </text>
+      </view>
+      <view class="section__card">
+        <view class="crypto-box">
+          <WdButton @click="onGenUuid">
+            生成 UUID
+          </WdButton>
+        </view>
+        <view v-if="uuidText" class="crypto-result">
+          {{ uuidText }}
         </view>
       </view>
     </view>

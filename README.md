@@ -113,7 +113,8 @@ pnpm wx:build:prd
 │   ├── layouts/               # 页面布局
 │   ├── packages/              # 分包
 │   │   ├── sub-static/        # 静态资源分包
-│   │   └── sub-vendor/        # 第三方库分包
+│   │   ├── sub-vendor/        # 第三方库分包
+│   │   └── sub-comp/          # 业务组件分包
 │   ├── pages/                 # 页面目录
 │   ├── plugins/               # 插件（路由、调试）
 │   ├── stores/                # Pinia 状态管理

@@ -64,6 +64,7 @@
     "@dcloudio/uni-mp-weixin": "3.0.0-5010520260709002",
     "@dcloudio/uni-mp-xhs": "3.0.0-5010520260709002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-5010520260709002",
+    "@lukeed/uuid": "^2.0.1",
     "@uni-helper/uni-env": "^0.3.1",
     "@vueuse/core": "9.13.0",
     "@wot-ui/router": "^1.1.2",
