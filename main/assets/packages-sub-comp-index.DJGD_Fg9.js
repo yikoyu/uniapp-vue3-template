@@ -1,0 +1,1 @@
+import{_ as a,F as l,e as u,w as o,o as s,f as t,G as n}from"./index-CQ2eveyQ.js";const e=a({},[["render",function(a,e){const r=l("layout-default-uni"),d=l("global-ku-root");return s(),u(d,null,{default:o((()=>[t(r,null,{default:o((()=>[n("div",null,"sub-comp")])),_:1})])),_:1})}]]);export{e as default};
