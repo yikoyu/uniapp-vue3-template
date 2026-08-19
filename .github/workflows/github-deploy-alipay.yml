@@ -1,0 +1,86 @@
+name: Github deploy Alipay
+
+on:
+  # push:
+  #   branches: [main]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号 (例如: 0.0.1)'
+        required: true
+        type: string
+        default: ''
+      version-description:
+        description: 版本描述
+        required: false
+        type: string
+        default: 手动发布版本
+      branch:
+        description: 要使用的分支
+        required: false
+        type: string
+        default: main
+      experience:
+        description: 上传后设置为体验版本
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JS
+        uses: yikoyu/workflows/setup-js@main
+
+      - name: Build
+        shell: bash
+        run: npm run ali:build:tst
+
+      - name: Upload
+        env:
+          ALIPAY_PRIVATE_KEY: ${{ secrets.ALIPAY_PRIVATE_KEY }}
+          ALIPAY_TOOL_ID: ${{ secrets.ALIPAY_TOOL_ID }}
+          ALIPAY_APPID: ${{ secrets.ALIPAY_APPID }}
+          VERSION: ${{ github.event.inputs.version || '' }}
+          DESCRIPTION: ${{ github.event.inputs.version-description || '自动发布版本' }}
+          EXPERIENCE: ${{ github.event.inputs.experience || 'true' }}
+        shell: bash
+        run: |
+          if [[ -z $ALIPAY_PRIVATE_KEY || -z $ALIPAY_TOOL_ID ]]; then
+            echo "##########"
+            echo ""
+            echo "Please set 'ALIPAY_PRIVATE_KEY' and 'ALIPAY_TOOL_ID' keys in actions secrets"
+            echo ""
+            echo "##########"
+            exit 1
+          fi
+
+          npm i -g minidev
+
+          echo "{
+            \"alipay\": {
+              \"authentication\": {
+                \"privateKey\": \"$ALIPAY_PRIVATE_KEY\",
+                \"toolId\": \"$ALIPAY_TOOL_ID\"
+              }
+            }
+          }" > identity-key.json
+
+          UPLOAD_ARGS="--app-id $ALIPAY_APPID"
+          UPLOAD_ARGS="$UPLOAD_ARGS --project dist/build/mp-alipay"
+          UPLOAD_ARGS="$UPLOAD_ARGS --identity-key-path identity-key.json"
+
+          if [[ -n "$VERSION" ]]; then
+            UPLOAD_ARGS="$UPLOAD_ARGS --version $VERSION"
+          fi
+
+          if [[ -n "$DESCRIPTION" ]]; then
+            UPLOAD_ARGS="$UPLOAD_ARGS --version-description $DESCRIPTION"
+          fi
+
+          if [[ "$EXPERIENCE" == "true" ]]; then
+            UPLOAD_ARGS="$UPLOAD_ARGS --experience"
+          fi
+
+          minidev upload $UPLOAD_ARGS
