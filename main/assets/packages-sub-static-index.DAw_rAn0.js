@@ -1,0 +1,1 @@
+import{_ as a,e as t,w as l,F as s,o as u,h as n,G as o}from"./index-CR4I6NVv.js";const e=a({},[["render",function(a,e){const r=s("layout-default-uni"),d=s("global-ku-root");return u(),t(d,null,{default:l(()=>[n(r,null,{default:l(()=>[o("div",null,"sub-static")]),_:1})]),_:1})}]]);export{e as default};
