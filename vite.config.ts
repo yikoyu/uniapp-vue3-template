@@ -44,6 +44,7 @@ export default defineConfig(async ({ command, mode }) => {
       UniHelperManifest({ insertFinalNewline: true }),
       // https://github.com/uni-helper/vite-plugin-uni-pages
       UniHelperPages({
+        insertFinalNewline: true,
         subPackages: [
           'src/packages/sub-static',
           'src/packages/sub-vendor',
@@ -56,7 +57,7 @@ export default defineConfig(async ({ command, mode }) => {
         ],
       }),
       // https://github.com/uni-helper/vite-plugin-uni-layouts
-      UniHelperLayouts(),
+      UniHelperLayouts({ dts: 'types/_uni-layouts.d.ts' }),
       // https://github.com/uni-helper/vite-plugin-uni-components
       UniHelperComponents({
         dts: 'types/_components.d.ts',

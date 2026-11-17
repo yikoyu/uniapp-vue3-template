@@ -17,7 +17,7 @@
       "miniprogram-api-typings",
       "@mini-types/alipay",
       "@uni-helper/uni-types",
-      "@uni-helper/vite-plugin-uni-pages",
+      "@uni-helper/vite-plugin-uni-pages/client",
       "@uni-ku/bundle-optimizer/client",
       "@wot-ui/ui/global",
       "uni-echarts/global"
